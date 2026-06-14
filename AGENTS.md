@@ -90,6 +90,8 @@ Update this section when standards are formalized.
 
 The maintainer pays per token and wants to learn token-efficient patterns. **Follow these defaults; deviating costs real money.**
 
+> **Canonical reference:** the global `delegate-to-composer` skill (`~/.cursor/skills/delegate-to-composer/SKILL.md`) is the source of truth for the dispatch + verification methodology. The rules below are this project's application of it.
+
 ### 8.1 Delegate execution work to a cheaper subagent
 
 Use the `Task` tool to spawn a **`composer-2.5-fast`** subagent (model slug: `composer-2.5-fast`) for:
