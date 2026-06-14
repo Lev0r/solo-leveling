@@ -1,0 +1,54 @@
+---
+description: Always read AGENTS.md, keep docs in sync, prefer cheap subagents
+alwaysApply: true
+---
+
+# Working Agreement — Quick Reference
+
+Full version: [AGENTS.md](mdc:AGENTS.md). Read it.
+
+## Before You Change Anything
+
+- Check [docs/open-questions.md](mdc:docs/open-questions.md). Don't silently resolve open items — ask the user.
+- Look for a relevant skill in `~/.cursor/skills-cursor/` before reinventing.
+
+## When You Change Anything
+
+Update docs **in the same change set** when you touch:
+
+| Change | Update |
+|--------|--------|
+| Tech stack / hosting / routing / PWA | `docs/architecture.md` |
+| Firestore or JSON shapes | `docs/data-model.md` (bump `schemaVersion`) |
+| User-visible feature behavior | `docs/features/<name>.md` |
+| Colors / typography / spacing | `docs/design/theme.md` |
+| Patterns for future growth | `docs/extensibility.md` |
+| Resolved open question | remove from `docs/open-questions.md`, fold into the relevant doc |
+| New doc file | link it from `docs/README.md` and root `README.md` |
+
+## Defaults to Honor
+
+- **Mobile-first PWA, Android primary.** No iOS-only work unless free. Touch targets ≥ 48 dp, no hover-only UI, `100dvh` not `100vh`, respect `env(safe-area-inset-*)`. Lock portrait.
+- **Default language: Ukrainian (uk).** All user-visible strings via i18n bundle — never inline.
+- **Multi-user-ready.** Data under `/users/{uid}/...`. Whitelist is a Firestore collection (`/allowedUsers/{email}`). Never hardcode an identity.
+- **TypeScript strict.** Prefer discriminated unions over boolean flags.
+- **Single-owner whitelist enforcement** stays in Firestore rules — never weaken for "dev". Use the emulator.
+
+## Token-Efficient Workflow
+
+- Delegate bulk edits / boilerplate / mechanical refactors to a `composer-2.5-fast` subagent via the `Task` tool.
+- Reserve the expensive model for architecture decisions, debugging, and review.
+- Verify subagent output by reading **only changed files** + `npm run typecheck`/`lint`.
+- Batch independent tool calls in one message. Use `Grep`/`Glob` before `Read`.
+- For research-only questions, use `readonly: true` on `Task`.
+
+See [AGENTS.md §8](mdc:AGENTS.md) for the prompt template.
+
+## Red Flags — Stop and Ask
+
+- Schema change without a `schemaVersion` bump.
+- New feature without a `docs/features/*.md` entry.
+- Hardcoded owner email or single-user assumption in code.
+- Inlined user-visible string (not via i18n).
+- "Temporary" auth bypass.
+- New heavyweight dependency added without justification.
