@@ -164,6 +164,6 @@ Before declaring a change complete:
 - Do not migrate to a different framework, hosting, or DB without an explicit human decision recorded in `docs/architecture.md`.
 - Do not hardcode a single owner identity. The whitelist is a collection.
 - Do not commit real Firebase credentials, owner emails outside the whitelist collection, or any user data.
-- Do not bypass the whitelist in security rules "for development". Use the Firestore emulator (see [docs/dev/firebase-emulator.md](docs/dev/firebase-emulator.md)).
+- Do not bypass the whitelist in security rules "for development". If you need isolation from production data, start the Firestore emulator (opt-in; see [docs/dev/firebase-emulator.md](docs/dev/firebase-emulator.md)). v1 dev runs against production Firebase by default.
 - Do not inline user-visible strings — Ukrainian is the default but everything goes through i18n.
 - Do not invent new dependencies when the standard library or an already-installed package will do — every dep is bytes in the service worker precache.

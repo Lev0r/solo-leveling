@@ -42,7 +42,7 @@ Decisions still pending. When resolved, **move the answer into the relevant doc 
 - ~~Notifications~~ → deferred. FCM not wired.
 - ~~Backups~~ → trust Firestore for storage; ship a manual "download all my data" admin export (see Q8 above for timing). No scheduled exports in v1 (requires Blaze).
 - ~~Data retention~~ → keep raw logs until summarized; one summary per calendar year in `users/{uid}/archives/{year}`; raw logs deletable after archival. See [features/yearly-archive.md](./features/yearly-archive.md).
-- ~~Firebase emulator~~ → use it for local dev. Setup guide: [dev/firebase-emulator.md](./dev/firebase-emulator.md).
+- ~~Firebase emulator~~ → **opt-in**, not v1 default. Dev runs against production Firebase. Emulator setup remains documented at [dev/firebase-emulator.md](./dev/firebase-emulator.md) for when isolation is needed.
 - ~~CI/CD~~ → none in v1. `npm run deploy` from dev machine. See [dev/deploy.md](./dev/deploy.md).
 - ~~Test stack~~ → Vitest + Playwright (Chromium / Pixel device). See [dev/testing.md](./dev/testing.md).
 - ~~Linting~~ → ESLint + `@typescript-eslint` + Prettier, defaults.

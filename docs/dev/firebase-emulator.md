@@ -1,5 +1,7 @@
 # Firebase Emulator Setup
 
+> **Status: opt-in.** v1 dev runs against production Firebase by default (`.env.development` has `VITE_USE_EMULATOR=false`). The emulator is here for when you need it — multi-user testing, schema migrations, or anything that shouldn't risk live data — not as a daily-driver requirement. To enable: set `VITE_USE_EMULATOR=true` in `.env.development.local` (gitignored) and run `npm run emulators` before `npm run dev`.
+
 For local development without touching production Firestore. The emulator suite gives a local Auth + Firestore + Hosting stack you can blow away at any time.
 
 ## Why use it

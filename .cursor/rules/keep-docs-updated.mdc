@@ -32,7 +32,7 @@ Update docs **in the same change set** when you touch:
 - **Default language: Ukrainian (uk).** All user-visible strings via i18n bundle — never inline.
 - **Multi-user-ready.** Data under `/users/{uid}/...`. Whitelist is a Firestore collection (`/allowedUsers/{email}`). Never hardcode an identity.
 - **TypeScript strict.** Prefer discriminated unions over boolean flags.
-- **Single-owner whitelist enforcement** stays in Firestore rules — never weaken for "dev". Use the emulator.
+- **Single-owner whitelist enforcement** stays in Firestore rules — never weaken for "dev". Use the emulator only if you need isolation; v1 dev defaults to production Firebase.
 
 ## Token-Efficient Workflow
 
