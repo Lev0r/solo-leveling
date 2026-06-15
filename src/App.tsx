@@ -14,6 +14,10 @@ function BrandHeading() {
   return <h1>{BRAND_NAME}</h1>;
 }
 
+function FallbackPage({ children }: { children: React.ReactNode }) {
+  return <div className="centered-page">{children}</div>;
+}
+
 function AuthenticatedApp({
   user,
 }: {
@@ -33,19 +37,19 @@ function AuthenticatedApp({
 
   if (profileState.status === 'loading') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <p>{t('common:loading')}</p>
-      </>
+      </FallbackPage>
     );
   }
 
   if (profileState.status === 'error') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <p>{t('common:error')}</p>
-      </>
+      </FallbackPage>
     );
   }
 
@@ -67,42 +71,42 @@ export default function App() {
 
   if (authState.status === 'loading') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <p>{t('common:loading')}</p>
-      </>
+      </FallbackPage>
     );
   }
 
   if (authState.status === 'signed-out') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <button type="button" onClick={() => void signInWithGoogle()}>
           {t('auth:signInWithGoogle')}
         </button>
-      </>
+      </FallbackPage>
     );
   }
 
   if (whitelistState.status === 'loading') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <p>{t('common:loading')}</p>
-      </>
+      </FallbackPage>
     );
   }
 
   if (whitelistState.status === 'not-whitelisted') {
     return (
-      <>
+      <FallbackPage>
         <BrandHeading />
         <p>{t('auth:notInvited')}</p>
         <button type="button" onClick={() => void signOutCurrentUser()}>
           {t('common:signOut')}
         </button>
-      </>
+      </FallbackPage>
     );
   }
 

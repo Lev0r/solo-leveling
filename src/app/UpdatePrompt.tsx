@@ -41,9 +41,9 @@ export function UpdatePrompt() {
         gap: 8,
         padding: '12px 16px',
         paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
-        backgroundColor: '#1B1D26',
-        color: '#E8E9EE',
-        borderTop: '1px solid #2E3142',
+        backgroundColor: 'var(--surface-1)',
+        color: 'var(--text)',
+        borderTop: '1px solid var(--border)',
         zIndex: 101,
       }}
     >

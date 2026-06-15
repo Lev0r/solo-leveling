@@ -34,10 +34,7 @@ export function SettingsPage() {
           <div style={{ display: 'flex', gap: 8 }}>
             <button
               type="button"
-              style={{
-                ...touchTarget,
-                fontWeight: profile.language === 'uk' ? 700 : 400,
-              }}
+              style={touchTarget}
               aria-pressed={profile.language === 'uk'}
               onClick={() => handleLanguageChange('uk')}
             >
@@ -45,10 +42,7 @@ export function SettingsPage() {
             </button>
             <button
               type="button"
-              style={{
-                ...touchTarget,
-                fontWeight: profile.language === 'en' ? 700 : 400,
-              }}
+              style={touchTarget}
               aria-pressed={profile.language === 'en'}
               onClick={() => handleLanguageChange('en')}
             >
@@ -58,7 +52,7 @@ export function SettingsPage() {
         </div>
 
         <div>
-          <p style={{ margin: '0 0 8px' }}>{t('timezone')}</p>
+          <p style={{ margin: '0 0 8px', color: 'var(--text-muted)' }}>{t('timezone')}</p>
           <p style={{ margin: 0 }}>{profile.timezone}</p>
         </div>
       </div>

@@ -44,11 +44,12 @@ export function WelcomePage() {
   return (
     <section>
       <h2>{t('welcome:title')}</h2>
-      <p>{t('welcome:description')}</p>
+      <p style={{ color: 'var(--text-muted)' }}>{t('welcome:description')}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
           <button
             type="button"
+            data-variant="primary"
             style={touchTarget}
             disabled={isSaving}
             onClick={() => {

@@ -6,7 +6,7 @@ export function UsersPage() {
   return (
     <section>
       <h2>{t('usersTitle')}</h2>
-      <p>{t('usersDescription')}</p>
+      <p style={{ color: 'var(--text-muted)' }}>{t('usersDescription')}</p>
     </section>
   );
 }

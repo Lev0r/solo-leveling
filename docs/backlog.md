@@ -94,9 +94,27 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 #### Nits & follow-ups (Phase 5)
 
 - [ ] Wire ▶ button to `/timer` with `TimerSession` state (Phase 6)
-- [ ] Visual polish (theme tokens) deferred until after Phase 6
+- [x] Visual polish (theme tokens) — landed in Phase 5.5
 - [ ] `routineExerciseIdsForDay` recomputed each render — micro-optimization with `useMemo` if it ever matters
 - [ ] Admin-editable `/defaults/routine` (Phase 8) — currently the constant is the only source
+
+---
+
+### Phase 5.5 — Theme tokens + global styles (Jun 15, 2026)
+
+Inserted out-of-roadmap after Phase 5 because the app was still rendering plain white on a dark-themed spec, and Phase 6's timer needs `--work`/`--rest`/`--complete`/`--paused`/`--ready` anyway.
+
+- [x] `src/ui/tokens.css`: full palette per `docs/design/theme.md` (surfaces, text, brand/accent, timer phases, system semantic, radius, motion), `color-scheme: dark`, system font stack, body bg/text, heading line-heights
+- [x] Global element styles: `<button>` (default + `data-variant="primary"` + `aria-pressed="true"` active state), `<input>` family, `<select>`, `<a>`, NavLink active via `[aria-current="page"]`, `:focus-visible` outline, `.tabular` helper, `.centered-page` utility for pre-router screens
+- [x] `src/ui/tokens.ts` mirror exports `var(--…)` strings (not raw hex) so inline-styled spots stay single-sourced from CSS
+- [x] Imported once from `src/main.tsx`
+- [x] Retrofit: removed every hardcoded hex from components (AppShell `#ccc`/`#eee`/`#666`; InstallPrompt + UpdatePrompt `#1B1D26`/`#E8E9EE`/`#2E3142`/`#252835`). Removed inline `fontWeight` toggles from AppShell NavLinks and SettingsPage language buttons in favor of CSS selectors on `[aria-current="page"]` / `[aria-pressed="true"]`.
+- [x] `index.html`: `<meta name="color-scheme" content="dark">`
+
+#### Nits & follow-ups (Phase 5.5)
+
+- [ ] Spacing scale not yet exposed as CSS vars (inline `padding`/`gap` numbers remain); add `--space-*` tokens if/when component CSS gets extracted to files
+- [ ] No light theme (out of v1 per `theme.md`)
 
 ---
 

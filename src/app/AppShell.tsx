@@ -16,11 +16,9 @@ const touchTarget: CSSProperties = {
   padding: '0 12px',
 };
 
-const navLinkStyle = ({ isActive }: { isActive: boolean }): CSSProperties => ({
+const navLinkStyle: CSSProperties = {
   ...touchTarget,
-  textDecoration: 'none',
-  fontWeight: isActive ? 700 : 400,
-});
+};
 
 export function AppShell() {
   const { t } = useTranslation('common');
@@ -35,7 +33,9 @@ export function AppShell() {
           flexDirection: 'column',
           gap: 8,
           padding: '12px 16px',
-          borderBottom: '1px solid #ccc',
+          paddingTop: 'calc(12px + env(safe-area-inset-top))',
+          borderBottom: '1px solid var(--border)',
+          background: 'var(--surface-1)',
         }}
       >
         <div
@@ -84,9 +84,10 @@ export function AppShell() {
         <footer
           style={{
             padding: '8px 16px',
-            borderTop: '1px solid #eee',
+            paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
+            borderTop: '1px solid var(--border)',
             fontSize: '0.875rem',
-            color: '#666',
+            color: 'var(--text-muted)',
           }}
         >
           <code>{t('debug.uid', { uid })}</code>

@@ -75,7 +75,15 @@ function ExerciseRow({
       : '';
 
   return (
-    <li style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <li
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        paddingBottom: 12,
+        borderBottom: '1px solid var(--border)',
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
         <input
           type="checkbox"
@@ -91,6 +99,7 @@ function ExerciseRow({
         {exercise.kind === 'timed' ? (
           <button
             type="button"
+            data-variant="primary"
             style={touchTarget}
             aria-label={t('today:actions.startTimer')}
             onClick={() => console.log('today:startTimer', { exerciseId: exercise.id })}
@@ -100,7 +109,14 @@ function ExerciseRow({
         ) : null}
       </div>
       {exercise.notes ? (
-        <p style={{ margin: 0, paddingLeft: 56, fontSize: '0.875rem' }}>
+        <p
+          style={{
+            margin: 0,
+            paddingLeft: 56,
+            fontSize: '0.875rem',
+            color: 'var(--text-muted)',
+          }}
+        >
           <span style={{ fontWeight: 600 }}>{t('today:notes')}: </span>
           {exercise.notes}
         </p>
