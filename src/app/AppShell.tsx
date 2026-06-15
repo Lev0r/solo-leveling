@@ -2,6 +2,8 @@ import type { CSSProperties } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { signOutCurrentUser, useAuthState } from '../data/auth';
+import { InstallPrompt } from './InstallPrompt';
+import { UpdatePrompt } from './UpdatePrompt';
 
 export const BRAND_NAME = 'SoloLeveling';
 
@@ -90,6 +92,9 @@ export function AppShell() {
           <code>{t('debug.uid', { uid })}</code>
         </footer>
       ) : null}
+
+      <InstallPrompt />
+      <UpdatePrompt />
     </div>
   );
 }

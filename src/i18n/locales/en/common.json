@@ -15,5 +15,14 @@
   },
   "timer": {
     "description": "Interval timer screen (placeholder)."
+  },
+  "install": {
+    "title": "Add SoloLeveling to your home screen",
+    "cta": "Install",
+    "dismiss": "Not now"
+  },
+  "update": {
+    "title": "A new version is available",
+    "cta": "Update"
   }
 }

@@ -62,6 +62,23 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 
 ---
 
+### Phase 4 — PWA shell (Jun 15, 2026)
+
+- [x] `vite-plugin-pwa` 1.3.0 wired: `generateSW`, `registerType: 'prompt'`, dev SW disabled
+- [x] Web manifest per `architecture.md` (uk, standalone, portrait, `#13141B` bg/theme); SVG icon placeholders at `public/icons/{icon,icon-maskable}.svg` and `public/favicon.svg` (PNG export deferred to Phase 10)
+- [x] `index.html`: `<html lang="uk">`, manifest link, theme-color meta, SVG favicon
+- [x] `UpdatePrompt` component (uses `useRegisterSW` tuple correctly after fix); `InstallPrompt` + `useInstallPrompt` hook capturing `beforeinstallprompt` with 7-day dismissal and standalone-mode suppression; both mounted in `AppShell`
+- [x] `useWakeLock(enabled)` hook in `src/lib/wakeLock.ts` — silent no-op when API absent; re-acquires on `visibilitychange → visible`. Unused until Phase 6.
+- [x] Vitest mock for `virtual:pwa-register/react` in `src/test/setup.ts` (tuple shape)
+
+#### Nits & follow-ups (Phase 4)
+
+- [ ] Real raster icons (192/512/maskable-512 PNGs) — Phase 10
+- [ ] Gate `UpdatePrompt`'s auto-reload by "is a timer / workout active?" once Phase 6 lands (architecture.md service-worker note)
+- [ ] Lighthouse PWA audit pass (deferred — needs real icons + HTTPS deploy)
+
+---
+
 ## In Progress
 
 _(nothing dispatched)_
