@@ -12,7 +12,7 @@ Decisions still pending. When resolved, **move the answer into the relevant doc 
 
 ### Visual — Final Tweaks
 
-4. **App display name in the manifest.** Currently `"SoloLeveling"` for both `name` and `short_name`. Different short name for the home-screen launcher (max ~12 chars looks good on Android)? E.g. `name: "SoloLeveling", short_name: "SoloLvl"`.
+4. ~~**App display name in the manifest.**~~ Resolved Phase 5.7c: `name: "Solo Leveling"`, `short_name: "Solo Lvl"`. Override if you want a different short name on the launcher.
 5. **Final icon export.** The concept render at `assets/sololeveling-icon.png` is 3:2 and needs a square + maskable export pass. Either re-generate via image gen, hand-edit in a vector tool, or commission. See [design/icon.md](./design/icon.md).
 
 ### Data Hygiene

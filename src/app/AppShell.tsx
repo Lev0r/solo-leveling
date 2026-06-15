@@ -60,6 +60,7 @@ export function AppShell() {
         <div className="app-top-bar__brand">
           <BrandLogo />
         </div>
+        <div className="app-top-bar__spacer" aria-hidden="true" />
       </header>
 
       <NavDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />

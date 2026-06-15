@@ -13,8 +13,8 @@ export default defineConfig({
         enabled: false,
       },
       manifest: {
-        name: 'SoloLeveling',
-        short_name: 'SoloLeveling',
+        name: 'Solo Leveling',
+        short_name: 'Solo Lvl',
         description: 'Personal home workout tracker',
         lang: 'uk',
         display: 'standalone',

@@ -155,7 +155,26 @@ User-driven follow-ups from the Phase 5.6 review. Iterative; each bullet is its 
 
 - [ ] Admin sub-section in `/config` is a placeholder; real CRUD is Phase 8.
 - [ ] Timed-card done state is only reachable today via the Phase-6 timer auto-complete; checklist toggling on a timed card is not possible (the timed card has no checkbox). If users need to manually mark a timed exercise done without running the timer, add a long-press / secondary action later.
-- [ ] Visual interest is minimal (gradient bg + hairline); exercise category icons / animated level-up moments still on the wish list.
+- [ ] Exercise category icons / animated level-up moments still on the wish list.
+
+---
+
+### Phase 5.7c — Top-bar fixes, logo polish, gym background image (Jun 15, 2026)
+
+User-driven follow-ups after seeing 5.7b live:
+
+- [x] **Top bar layout fix.** Was: hamburger `position: absolute` overlapping the centered logo on narrow screens. Now: three-column flex (menu | brand `flex: 1` | spacer-equal-to-menu) so the brand truly centers without overlap, and the SVG gets `max-width: 100%; height: auto;` for safety on very narrow viewports.
+- [x] **Brand name** is now "Solo Leveling" (with space) everywhere user-facing: `BrandLogo` SVG text, `BRAND_NAME` constant, `App.test.tsx` assertion, `common:brand` i18n key (uk + en), `<title>` tag, and PWA manifest (`name: 'Solo Leveling'`, `short_name: 'Solo Lvl'`).
+- [x] **Logo edge crispness.** Two stacked `<text>` elements: the back layer has the heavy glow filter, the front layer has the same gradient fill plus a thin `rgba(255,255,255,0.9)` stroke (paint-order: stroke fill) so the letterforms stay readable on top of the glow halo.
+- [x] **Stronger glow.** Layered two Gaussian blurs (stdDeviation 5 + 2) with two passes of the wider blur in the feMerge — gives a richer halo without the smudge of a single huge blur.
+- [x] **Gym background image.** Generated a dark moody gym photo (kettlebells / dumbbell rack / rig silhouettes, warm orange highlights right, violet ambient left, deep shadows) and committed it as `public/gym-bg.jpg` (~1.7 MB). The body background now layers (top to bottom): the existing two radial accents → a vertical `rgba(19,20,27,0.78–0.94)` darken overlay → the image with `background-size: cover; background-attachment: fixed`. Image is NOT in the SW precache (Workbox default globs exclude `.jpg`), so the 1.7 MB only pays on first network load.
+
+#### Nits & follow-ups (Phase 5.7c)
+
+- [ ] `gym-bg.jpg` is 1.7 MB and unoptimized. Compress with `cwebp` / `mozjpeg` once a build tool lands (Phase 10 production-assets pass), aim for ~150–300 KB.
+- [ ] Generated image is landscape 1024×683; on portrait mobile we crop the sides via `cover`. If the kettlebell foreground loses too much on narrow screens, regenerate at portrait aspect or use `media`-conditional images.
+- [ ] `short_name` of `Solo Lvl` is a guess (resolves open-question #4 by default); confirm or override.
+- [ ] `docs/architecture.md` still shows the manifest snippet with the old `SoloLeveling` name and `theme.md` / `icon.md` still reference the old name — minor doc drift; sweep next time a doc is touched.
 
 ---
 

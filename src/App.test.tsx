@@ -15,7 +15,7 @@ vi.mock('./data/allowedUsers', () => ({
 describe('App', () => {
   it('renders the heading and loading or sign-in state', () => {
     render(<App />);
-    expect(screen.getByRole('heading', { name: 'SoloLeveling' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Solo Leveling' })).toBeInTheDocument();
 
     const loadingOrSignIn =
       screen.queryByText(i18n.t('common:loading')) ??

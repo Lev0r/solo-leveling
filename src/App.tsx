@@ -8,11 +8,11 @@ import {
   useUserProfile,
 } from './data/userProfile';
 import { router } from './app/router';
-import { BrandLogo } from './app/BrandLogo';
+import { BRAND_NAME, BrandLogo } from './app/BrandLogo';
 
 function BrandHeading() {
   return (
-    <h1 aria-label="SoloLeveling">
+    <h1 aria-label={BRAND_NAME}>
       <BrandLogo />
     </h1>
   );
