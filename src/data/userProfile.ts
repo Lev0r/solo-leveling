@@ -11,6 +11,11 @@ import {
 } from 'react';
 import { getDb } from './firebase';
 import {
+  getE2EProfile,
+  isE2EFixturesEnabled,
+  setE2EProfileLanguage,
+} from '../e2e/fixtures';
+import {
   USER_PROFILE_SCHEMA_VERSION,
   type AppLanguage,
   type UserProfile,
@@ -140,9 +145,19 @@ export function useUserProfile(args: {
   displayName: string | null;
 }): UserProfileState {
   const { uid, email, displayName } = args;
+  const fixturesEnabled = isE2EFixturesEnabled();
+  const [fixtureProfile, setFixtureProfile] = useState<UserProfile>(() =>
+    fixturesEnabled ? getE2EProfile() : buildNewProfile(email, displayName),
+  );
   const [state, setState] = useState<UserProfileState>({ status: 'loading' });
 
   const updateLanguage = useCallback(async (lang: AppLanguage) => {
+    if (fixturesEnabled) {
+      setE2EProfileLanguage(lang);
+      setFixtureProfile(getE2EProfile());
+      return;
+    }
+
     const ref = userProfileDocRef(uid);
     await updateDoc(ref, { language: lang });
     setState((prev) => {
@@ -155,9 +170,13 @@ export function useUserProfile(args: {
         profile: { ...prev.profile, language: lang },
       };
     });
-  }, [uid]);
+  }, [fixturesEnabled, uid]);
 
   useEffect(() => {
+    if (fixturesEnabled) {
+      return;
+    }
+
     let cancelled = false;
 
     void loadOrCreateProfile(uid, email, displayName)
@@ -182,7 +201,20 @@ export function useUserProfile(args: {
     return () => {
       cancelled = true;
     };
-  }, [uid, email, displayName, updateLanguage]);
+  }, [uid, email, displayName, updateLanguage, fixturesEnabled]);
+
+  const fixtureProfileState = useMemo(
+    (): UserProfileState => ({
+      status: 'ready',
+      profile: fixtureProfile,
+      updateLanguage,
+    }),
+    [fixtureProfile, updateLanguage],
+  );
+
+  if (fixturesEnabled) {
+    return fixtureProfileState;
+  }
 
   return state;
 }

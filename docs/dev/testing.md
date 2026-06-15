@@ -139,6 +139,12 @@ npm run test:e2e -- --ui     # Playwright UI mode (great for learning)
 npx playwright show-report   # last run's HTML report
 ```
 
+### E2E fixture mode
+
+Production and normal dev builds never set this. Playwright’s **authenticated** project builds with `VITE_E2E_FIXTURES=true` into `dist-e2e-auth/` and serves it on port 5000; fixture hooks in `src/e2e/fixtures.ts` short-circuit auth, whitelist, profile, routine, and daily log so happy-path specs run without Firebase sign-in or Firestore reads. The **unauthenticated** project builds into `dist-e2e-unauth/` on port 5001 for the sign-in screen only.
+
+On Linux/WSL, install browser OS deps once: `npx playwright install-deps chromium` (requires sudo). Then `npx playwright install chromium`.
+
 ## What NOT to test in v1
 
 - Cross-browser parity (Chromium only).

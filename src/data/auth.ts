@@ -4,7 +4,8 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { E2E_USER, isE2EFixturesEnabled } from '../e2e/fixtures';
 import { getAuthClient } from './firebase';
 
 export type AuthState =
@@ -27,9 +28,20 @@ export async function signOutCurrentUser(): Promise<void> {
 }
 
 export function useAuthState(): AuthState {
-  const [state, setState] = useState<AuthState>({ status: 'loading' });
+  const fixturesEnabled = isE2EFixturesEnabled();
+  const fixtureAuthState = useMemo(
+    (): AuthState => ({ status: 'signed-in', user: E2E_USER }),
+    [],
+  );
+  const [state, setState] = useState<AuthState>(() =>
+    fixturesEnabled ? fixtureAuthState : { status: 'loading' },
+  );
 
   useEffect(() => {
+    if (fixturesEnabled) {
+      return;
+    }
+
     const auth = getAuthClient();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user?.email) {
@@ -48,7 +60,11 @@ export function useAuthState(): AuthState {
     });
 
     return unsubscribe;
-  }, []);
+  }, [fixturesEnabled]);
+
+  if (fixturesEnabled) {
+    return fixtureAuthState;
+  }
 
   return state;
 }

@@ -222,7 +222,7 @@ User-driven follow-ups after seeing 5.7b live:
 
 #### Nits & follow-ups (Phase 6)
 
-- [ ] Playwright e2e for timer happy path (Phase 11)
+- [x] Playwright e2e for timer happy path (Phase 11)
 - [ ] Gate `UpdatePrompt` auto-reload while timer active (Phase 4 nit)
 
 ---
@@ -281,7 +281,16 @@ Order subject to change. Each phase is one subagent dispatch + verification.
 - [x] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
 - [x] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
 - [x] **Phase 10 — Production icon export**: 192 / 512 / maskable-512 PNGs, hooked into manifest.
-- [ ] **Phase 11 — Playwright e2e**: 1 happy-path per primary screen.
+- [x] **Phase 11 — Playwright e2e**: 1 happy-path per primary screen.
+
+---
+
+### Phase 11 — Playwright e2e (Jun 15, 2026)
+
+- [x] `VITE_E2E_FIXTURES=true` build-time fixture mode in `src/e2e/fixtures.ts` — short-circuits auth, whitelist, profile, routine, daily log (no Firestore in happy paths)
+- [x] `playwright.config.ts` — two projects: `unauthenticated` (port 5001, sign-in) + `authenticated` (port 5000, Pixel 7, fixtures)
+- [x] Happy-path specs: `sign-in`, `today`, `config`, `settings`, `timer`
+- [x] `docs/dev/testing.md` — E2E fixture mode note
 
 ---
 

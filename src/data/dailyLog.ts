@@ -1,5 +1,6 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { e2eGetTodayLog, e2eSetExerciseCompletion, isE2EFixturesEnabled } from '../e2e/fixtures';
 import { todayDateStringInTimezone } from '../lib/cycle';
 import { getDb } from './firebase';
 import {
@@ -85,6 +86,10 @@ export async function getTodayLog(args: {
   timezone: string;
   now?: Date;
 }): Promise<DailyLog | null> {
+  if (isE2EFixturesEnabled()) {
+    return e2eGetTodayLog(args);
+  }
+
   const now = args.now ?? new Date();
   const dateYmd = todayDateStringInTimezone(now, args.timezone);
   const snapshot = await getDoc(dailyLogDocRef(args.uid, dateYmd));
@@ -136,6 +141,10 @@ export async function setExerciseCompletion(args: {
   routineExerciseIdsForDay: readonly string[];
   now?: Date;
 }): Promise<DailyLog> {
+  if (isE2EFixturesEnabled()) {
+    return e2eSetExerciseCompletion(args);
+  }
+
   const now = args.now ?? new Date();
   const dateYmd = todayDateStringInTimezone(now, args.timezone);
   const completedVia = args.completedVia ?? 'manual';
@@ -187,14 +196,19 @@ export type TodayLogState =
 
 export function useTodayLog(args: { uid: string; timezone: string }): TodayLogState {
   const { uid, timezone } = args;
-  const [state, setState] = useState<TodayLogState>({ status: 'loading' });
+  const fixturesEnabled = isE2EFixturesEnabled();
   const [reloadToken, setReloadToken] = useState(0);
+  const [state, setState] = useState<TodayLogState>({ status: 'loading' });
 
   const reload = useCallback(() => {
     setReloadToken((token) => token + 1);
   }, []);
 
   useEffect(() => {
+    if (fixturesEnabled) {
+      return;
+    }
+
     let cancelled = false;
 
     void getTodayLog({ uid, timezone })
@@ -219,7 +233,20 @@ export function useTodayLog(args: { uid: string; timezone: string }): TodayLogSt
     return () => {
       cancelled = true;
     };
-  }, [uid, timezone, reloadToken, reload]);
+  }, [uid, timezone, reloadToken, reload, fixturesEnabled]);
+
+  const fixtureLog = useMemo(() => {
+    void reloadToken;
+    return e2eGetTodayLog({ uid, timezone });
+  }, [uid, timezone, reloadToken]);
+  const fixtureLogState = useMemo(
+    (): TodayLogState => ({ status: 'ready', log: fixtureLog, reload }),
+    [fixtureLog, reload],
+  );
+
+  if (fixturesEnabled) {
+    return fixtureLogState;
+  }
 
   return state;
 }

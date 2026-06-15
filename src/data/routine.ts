@@ -1,6 +1,6 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { BUILTIN_DEFAULT_ROUTINE } from './defaultRoutine';
+import { useEffect, useMemo, useState } from 'react';
+import { BUILTIN_DEFAULT_ROUTINE, isE2EFixturesEnabled } from '../e2e/fixtures';
 import { getDb } from './firebase';
 import {
   ROUTINE_SCHEMA_VERSION,
@@ -309,6 +309,10 @@ export async function getDefaultRoutine(): Promise<NormalizedRoutine> {
 }
 
 export async function getUserRoutine(uid: string): Promise<NormalizedRoutine | null> {
+  if (isE2EFixturesEnabled()) {
+    return BUILTIN_DEFAULT_ROUTINE;
+  }
+
   const snapshot = await getDoc(userRoutineDocRef(uid));
 
   if (!snapshot.exists()) {
@@ -335,9 +339,20 @@ export type UserRoutineState =
   | { status: 'error'; error: Error };
 
 export function useUserRoutine(uid: string): UserRoutineState {
-  const [state, setState] = useState<UserRoutineState>({ status: 'loading' });
+  const fixturesEnabled = isE2EFixturesEnabled();
+  const fixtureRoutineState = useMemo(
+    (): UserRoutineState => ({ status: 'ready', routine: BUILTIN_DEFAULT_ROUTINE }),
+    [],
+  );
+  const [state, setState] = useState<UserRoutineState>(() =>
+    fixturesEnabled ? fixtureRoutineState : { status: 'loading' },
+  );
 
   useEffect(() => {
+    if (fixturesEnabled) {
+      return;
+    }
+
     let cancelled = false;
 
     void getUserRoutine(uid)
@@ -362,7 +377,11 @@ export function useUserRoutine(uid: string): UserRoutineState {
     return () => {
       cancelled = true;
     };
-  }, [uid]);
+  }, [uid, fixturesEnabled]);
+
+  if (fixturesEnabled) {
+    return fixtureRoutineState;
+  }
 
   return state;
 }

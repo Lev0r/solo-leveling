@@ -3,6 +3,8 @@ node_modules/
 
 # Build output
 dist/
+dist-e2e-auth/
+dist-e2e-unauth/
 build/
 
 # Environment (anything ending in .local stays local)
@@ -36,7 +38,9 @@ coverage/
 playwright-report/
 test-results/
 .playwright/
+.playwright-libs/
 
 # Cursor agent runtime files (workspace-local)
 terminals/
 temp/
+dist-auth/

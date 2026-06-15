@@ -7,6 +7,7 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { isE2EFixturesEnabled } from '../e2e/fixtures';
 import { getDb } from './firebase';
 
 export const ALLOWED_USER_SCHEMA_VERSION = 1;
@@ -126,10 +127,11 @@ export async function removeAllowedUser(email: string): Promise<void> {
 }
 
 export function useIsWhitelisted(email: string | null): WhitelistState {
+  const fixturesEnabled = isE2EFixturesEnabled();
   const [resolved, setResolved] = useState<ResolvedWhitelist | null>(null);
 
   useEffect(() => {
-    if (!email) {
+    if (fixturesEnabled || !email) {
       return;
     }
 
@@ -158,7 +160,11 @@ export function useIsWhitelisted(email: string | null): WhitelistState {
     return () => {
       cancelled = true;
     };
-  }, [email]);
+  }, [email, fixturesEnabled]);
+
+  if (fixturesEnabled) {
+    return { status: 'whitelisted' };
+  }
 
   if (!email || resolved?.email !== email) {
     return { status: 'loading' };
