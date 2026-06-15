@@ -55,8 +55,8 @@ Warm vs. cool was chosen so the contrast is unmistakable from across the room an
 
 ## Typography
 
-- **Body:** `Manrope` (weights 400/500/600/700) — geometric, modern, full Cyrillic.
-- **Display / headings / brand:** `Oswald` (weights 500/700) — condensed athletic feel, full Cyrillic.
+- **Body:** `Exo 2` (weights 400/500/600/700 + italics 400/700) — geometric futuristic sans by Natanael Gama (Portugal). Full Cyrillic.
+- **Display / headings / brand:** `Syncopate` (weights 400/700) — wide sci-fi-tech geometric by Brian J. Bonislawski / Astigmatic (USA). Full Cyrillic.
 - Both loaded from Google Fonts with `display=swap`; preconnect to `fonts.gstatic.com`. Tokens: `--font-body`, `--font-display` in `src/ui/tokens.css`.
 - System font stack remains the fallback chain inside both tokens:
   ```

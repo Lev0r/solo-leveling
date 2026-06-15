@@ -6,7 +6,7 @@ export function BrandLogo({ height = 32 }: { height?: number }) {
       role="img"
       aria-label={BRAND_NAME}
       height={height}
-      viewBox="0 0 220 40"
+      viewBox="0 0 340 40"
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
@@ -24,13 +24,13 @@ export function BrandLogo({ height = 32 }: { height?: number }) {
       </defs>
       <text
         x="0"
-        y="30"
+        y="28"
         fill="url(#brandGradient)"
         filter="url(#brandGlow)"
-        fontFamily="Oswald, sans-serif"
+        fontFamily="Syncopate, sans-serif"
         fontWeight="700"
-        fontSize="32"
-        letterSpacing="2"
+        fontSize="22"
+        letterSpacing="1"
       >
         {BRAND_NAME}
       </text>
