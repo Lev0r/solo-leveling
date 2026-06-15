@@ -22,6 +22,7 @@ See [docs/open-questions.md](./docs/open-questions.md) for items still pending.
 | Document | Description |
 |----------|-------------|
 | [AGENTS.md](./AGENTS.md) | Working agreement for human + AI contributors (read first) |
+| [docs/backlog.md](./docs/backlog.md) | What's done, in flight, and next |
 | [MOU.md](./MOU.md) | Original Memorandum of Understanding |
 | [docs/README.md](./docs/README.md) | Documentation index |
 | [docs/architecture.md](./docs/architecture.md) | System design, tech stack, PWA setup |

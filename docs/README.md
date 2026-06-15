@@ -5,6 +5,7 @@ This folder contains design and feature documentation for **SoloLeveling**, a mo
 ## Read First
 
 - **[../AGENTS.md](../AGENTS.md)** — Working agreement for human + AI contributors. Includes the token-efficient subagent workflow.
+- **[backlog.md](./backlog.md)** — What's done, in flight, and next. Read on session start to know where things stand.
 - **[open-questions.md](./open-questions.md)** — Decisions still pending.
 
 ## Foundation

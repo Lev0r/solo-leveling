@@ -22,6 +22,7 @@ Any change that affects **any** of the following **MUST** include documentation 
 
 | Topic | File to update |
 |-------|----------------|
+| Task tracking (phases, bugs, follow-ups, roadmap) | `docs/backlog.md` |
 | Tech stack, hosting, PWA, routing, theme | `docs/architecture.md`, `docs/design/theme.md` |
 | Firestore / JSON schemas | `docs/data-model.md` |
 | New feature behavior | `docs/features/<name>.md` (create if needed) |
@@ -31,6 +32,17 @@ Any change that affects **any** of the following **MUST** include documentation 
 | Working agreement (this file) | `AGENTS.md` |
 
 When adding a new doc, link it from `docs/README.md` and from the root `README.md` table.
+
+### Backlog discipline
+
+`docs/backlog.md` is the single index of what's done, in flight, and next. When you finish a phase:
+
+1. Move the items from "In Progress" / "Next" to "Done" under a new phase section with the commit hash.
+2. Add any bugs or follow-ups that surfaced under "Nits & follow-ups" or "Bugs / Issues".
+3. If you started something but didn't finish, leave it in "In Progress" with `[/]`.
+4. If you discovered new ideas, drop them in "Unscheduled backlog" — don't lose them.
+
+Future agents read the backlog on session start to know where things stand without re-deriving it from `git log`.
 
 ## 3. Don't Silently Decide Open Questions
 
