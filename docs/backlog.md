@@ -79,20 +79,37 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 
 ---
 
+### Phase 5 — Routine loading + Today's Workout (Jun 15, 2026)
+
+- [x] Schema types: `NormalizedRoutine`, `Exercise` discriminated union (`checklist | timed`), `NormalizedTimer`, `DailyLog`; `ROUTINE_SCHEMA_VERSION = 1`, `DAILY_LOG_SCHEMA_VERSION = 1` `(9339a53)`
+- [x] `src/data/routine.ts`: `parseRoutine` (validate + normalize uniform→array, infer missing `kind`), `getDefaultRoutine` (reads `/defaults/routine`, falls back to built-in), `getUserRoutine` / `setUserRoutine` / `useUserRoutine` `(9339a53)`
+- [x] `src/data/defaultRoutine.ts`: `BUILTIN_DEFAULT_ROUTINE` encoding `docs/basic-program-template.md` (Day A 11, Day B 11, Day C 5) `(9339a53)`
+- [x] `src/data/dailyLog.ts`: `getTodayLog`, `setExerciseCompletion` (read-modify-write, never clears `completedAt`, stamps only on first all-complete), `useTodayLog` with imperative `reload()` `(9339a53)`
+- [x] `src/lib/cycle.ts`: timezone-safe `todayDateStringInTimezone` via `Intl.DateTimeFormat('en-CA')`, `daysBetweenLocal`, `computeCycleIndex` (negative-safe), `getTodaysDay` `(9339a53)`
+- [x] `TodayPage`: routine load → `<Navigate to="/welcome">` if missing; resolves today's day, renders checklist with per-row pending flag, completion banner, ▶ button placeholder for timed exercises (row-hint: `N×W/R` uniform, slash-joined work seconds variable, mixed-fallback >24 chars) `(18d0089)`
+- [x] `WelcomePage`: "Use default" copies `getDefaultRoutine()` → `setUserRoutine(uid)` → navigates home; "Import JSON" still stubbed for Phase 7 `(18d0089)`
+- [x] New `today` i18n namespace (uk + en) with plural-aware `hint.mixed` `(18d0089)`
+- [x] 31 tests across 6 files green (cycle math, routine parse/validate/normalize, dailyLog read-modify-write semantics)
+
+#### Nits & follow-ups (Phase 5)
+
+- [ ] Wire ▶ button to `/timer` with `TimerSession` state (Phase 6)
+- [ ] Visual polish (theme tokens) deferred until after Phase 6
+- [ ] `routineExerciseIdsForDay` recomputed each render — micro-optimization with `useMemo` if it ever matters
+- [ ] Admin-editable `/defaults/routine` (Phase 8) — currently the constant is the only source
+
+---
+
 ## In Progress
 
 _(nothing dispatched)_
 
 ---
 
----
-
-## Rough roadmap (post Phase 3)
+## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
 
-- [ ] **Phase 4 — PWA shell**: `vite-plugin-pwa`, manifest, service worker, "add to home screen" hint for Android, Wake Lock helper.
-- [ ] **Phase 5 — Routine loading + Today's Workout**: read `/defaults/routine` and `/users/{uid}/routine/active`, cycle calculation in user timezone, render exercise list, write `/dailyLogs/{date}` on completion.
 - [ ] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
 - [ ] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
 - [ ] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
