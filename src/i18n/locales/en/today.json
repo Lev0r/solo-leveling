@@ -1,0 +1,16 @@
+{
+  "title": "Today",
+  "dayLabel": "{{label}}",
+  "completedBanner": "Workout complete",
+  "hint": {
+    "mixed_one": "{{count}} set, mixed",
+    "mixed_other": "{{count}} sets, mixed"
+  },
+  "actions": {
+    "startTimer": "Start timer"
+  },
+  "notes": "Notes",
+  "errors": {
+    "toggleFailed": "Could not update completion"
+  }
+}

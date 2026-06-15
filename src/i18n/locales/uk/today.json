@@ -1,0 +1,18 @@
+{
+  "title": "Сьогодні",
+  "dayLabel": "{{label}}",
+  "completedBanner": "Тренування завершено",
+  "hint": {
+    "mixed_one": "{{count}} підхід, змішано",
+    "mixed_few": "{{count}} підходи, змішано",
+    "mixed_many": "{{count}} підходів, змішано",
+    "mixed_other": "{{count}} підходи, змішано"
+  },
+  "actions": {
+    "startTimer": "Запустити таймер"
+  },
+  "notes": "Нотатки",
+  "errors": {
+    "toggleFailed": "Не вдалося оновити виконання"
+  }
+}

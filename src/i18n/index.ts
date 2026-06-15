@@ -6,11 +6,13 @@ import ukAdmin from './locales/uk/admin.json';
 import ukAuth from './locales/uk/auth.json';
 import ukCommon from './locales/uk/common.json';
 import ukSettings from './locales/uk/settings.json';
+import ukToday from './locales/uk/today.json';
 import ukWelcome from './locales/uk/welcome.json';
 import enAdmin from './locales/en/admin.json';
 import enAuth from './locales/en/auth.json';
 import enCommon from './locales/en/common.json';
 import enSettings from './locales/en/settings.json';
+import enToday from './locales/en/today.json';
 import enWelcome from './locales/en/welcome.json';
 
 void i18n
@@ -22,6 +24,7 @@ void i18n
         common: ukCommon,
         auth: ukAuth,
         welcome: ukWelcome,
+        today: ukToday,
         settings: ukSettings,
         admin: ukAdmin,
       },
@@ -29,6 +32,7 @@ void i18n
         common: enCommon,
         auth: enAuth,
         welcome: enWelcome,
+        today: enToday,
         settings: enSettings,
         admin: enAdmin,
       },
