@@ -39,3 +39,4 @@ test-results/
 
 # Cursor agent runtime files (workspace-local)
 terminals/
+temp/

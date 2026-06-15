@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuthState } from '../data/auth';
 import { BrandLogo } from './BrandLogo';
 import { InstallPrompt } from './InstallPrompt';
 import { NavDrawer } from './NavDrawer';
@@ -30,8 +29,6 @@ function HamburgerIcon() {
 
 export function AppShell() {
   const { t } = useTranslation('common');
-  const authState = useAuthState();
-  const uid = authState.status === 'signed-in' ? authState.user.uid : '';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -68,20 +65,6 @@ export function AppShell() {
       <main style={{ flex: 1, padding: '16px' }}>
         <Outlet />
       </main>
-
-      {uid ? (
-        <footer
-          style={{
-            padding: '8px 16px',
-            paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
-            borderTop: '1px solid var(--border)',
-            fontSize: '0.875rem',
-            color: 'var(--text-muted)',
-          }}
-        >
-          <code>{t('debug.uid', { uid })}</code>
-        </footer>
-      ) : null}
 
       <InstallPrompt />
       <UpdatePrompt />

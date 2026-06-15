@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { signOutCurrentUser } from '../data/auth';
+import { BrandLogo } from './BrandLogo';
 
 function CloseIcon() {
   return (
@@ -90,6 +91,10 @@ export function NavDrawer({
         >
           <CloseIcon />
         </button>
+
+        <div className="nav-drawer__brand">
+          <BrandLogo height={28} />
+        </div>
 
         <nav className="nav-drawer__links">
           <NavLink to="/" end onClick={onClose}>

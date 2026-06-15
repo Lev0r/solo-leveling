@@ -63,9 +63,9 @@ body {
 
 body {
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--work) 7%, transparent), transparent 60%),
-    linear-gradient(180deg, rgba(19, 20, 27, 0.78) 0%, rgba(19, 20, 27, 0.86) 60%, rgba(19, 20, 27, 0.94) 100%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--work) 8%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(19, 20, 27, 0.45) 0%, rgba(19, 20, 27, 0.55) 50%, rgba(19, 20, 27, 0.7) 100%),
     url('/gym-bg.jpg');
   background-size: auto, auto, auto, cover;
   background-position: center, center, center, center;
@@ -239,7 +239,13 @@ a[aria-current='page'] {
   left: 0;
   bottom: 0;
   width: min(80vw, 320px);
-  background: var(--surface-1);
+  background:
+    radial-gradient(ellipse 100% 60% at 0% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, color-mix(in srgb, var(--work) 10%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+  box-shadow:
+    inset -1px 0 0 0 color-mix(in srgb, var(--accent) 30%, transparent),
+    8px 0 32px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -262,21 +268,55 @@ a[aria-current='page'] {
   justify-content: center;
 }
 
+.nav-drawer__brand {
+  padding: 12px 16px 24px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  position: relative;
+}
+
+.nav-drawer__brand::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--work), transparent);
+  opacity: 0.5;
+}
+
 .nav-drawer__links {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 8px;
+  margin-top: 16px;
+  padding: 0 8px;
 }
 
 .nav-drawer__links a {
-  min-height: 48px;
+  min-height: 52px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 16px;
   border-radius: var(--radius-sm);
-  color: var(--text);
+  color: var(--text-muted);
   text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+  border-left: 3px solid transparent;
+  transition:
+    background-color var(--transition-default),
+    color var(--transition-default),
+    border-left-color var(--transition-default);
+}
+
+.nav-drawer__links a[aria-current='page'] {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-left-color: var(--accent);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -288,11 +328,12 @@ a[aria-current='page'] {
 
 .nav-drawer__divider {
   border: 0;
-  border-top: 1px solid var(--border);
-  margin: 16px 0;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  margin: 16px 8px;
 }
 
 .nav-drawer__sign-out {
+  margin: 0 16px 16px;
   margin-top: auto;
 }
 
@@ -367,11 +408,19 @@ a[aria-current='page'] {
 
 .exercise-card {
   display: flex;
-  align-items: center;
-  background: var(--surface-1);
+  align-items: stretch;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 60%, transparent), transparent 50%),
+    color-mix(in srgb, var(--surface-1) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
   border-radius: var(--radius-md);
   padding: 12px 16px;
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, white 6%, transparent),
+    0 1px 2px 0 rgba(0, 0, 0, 0.2);
   transition:
     transform var(--transition-default),
     background-color var(--transition-default),
@@ -388,9 +437,12 @@ a[aria-current='page'] {
 }
 
 .exercise-card[data-done='true'] {
-  opacity: 0.6;
-  border-color: var(--complete);
-  background: color-mix(in srgb, var(--complete) 10%, var(--surface-1));
+  opacity: 0.55;
+  border-color: var(--border);
+  border-left-color: var(--complete);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--complete) 10%, transparent), transparent 60%),
+    color-mix(in srgb, var(--surface-1) 92%, transparent);
 }
 
 .exercise-card__label {
@@ -422,6 +474,7 @@ a[aria-current='page'] {
 
 .exercise-card--timed {
   padding: 0;
+  border-left-color: var(--work);
 }
 
 .exercise-card__timed-trigger {

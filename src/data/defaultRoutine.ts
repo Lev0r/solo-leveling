@@ -39,10 +39,11 @@ const DAILY_MINIMUM: Exercise[] = [
     notes: '2 хв: шия, плечі, таз, коліна',
   },
   {
-    kind: 'checklist',
+    kind: 'timed',
     id: 'warmup_skipping',
     name: 'Скакалка',
-    notes: '5 хв безперервно, помірний темп',
+    timer: { rounds: [{ workSeconds: 300, restSeconds: 0 }] },
+    notes: 'Безперервно, помірний темп',
   },
   {
     kind: 'checklist',
@@ -57,10 +58,11 @@ const DAILY_MINIMUM: Exercise[] = [
     notes: '2 підходи по 50% від максимуму',
   },
   {
-    kind: 'checklist',
+    kind: 'timed',
     id: 'warmup_plank',
     name: 'Планка',
-    notes: '1 хв активація кору',
+    timer: { rounds: [{ workSeconds: 60, restSeconds: 0 }] },
+    notes: 'Активація кору, нейтральний хребет',
   },
 ];
 
@@ -93,6 +95,7 @@ const DAY_A_EXERCISES: Exercise[] = [
     id: 'kb_swings',
     name: 'Махи гірею',
     timer: uniformTimer(40, 20, 4),
+    notes: 'Обома руками, потужний поштовх тазом — балістично',
   },
   {
     kind: 'checklist',
@@ -153,6 +156,7 @@ const DAY_B_EXERCISES: Exercise[] = [
     id: 'halo',
     name: 'Halo (Обертання гірі навколо голови)',
     timer: uniformTimer(40, 30, 3),
+    notes: 'Повільні контрольовані оберти, плечі розслаблені',
   },
   {
     kind: 'timed',
@@ -162,6 +166,7 @@ const DAY_B_EXERCISES: Exercise[] = [
       { workSeconds: 50, restSeconds: 30 },
       { workSeconds: 50, restSeconds: 0 },
     ]),
+    notes: '2 раунди × 50 с з переходом «низька-висока» планка',
   },
 ];
 
@@ -173,17 +178,17 @@ export const BUILTIN_DEFAULT_ROUTINE: NormalizedRoutine = {
   days: [
     {
       id: 'day_a_legs_pull',
-      label: 'День 1 — Ноги та тягові',
+      label: 'Ноги та тягові',
       exercises: [...DAILY_MINIMUM, ...DAY_A_EXERCISES],
     },
     {
       id: 'day_b_press_ballistic',
-      label: 'День 2 — Жими та балістика',
+      label: 'Жими та балістика',
       exercises: [...DAILY_MINIMUM, ...DAY_B_EXERCISES],
     },
     {
       id: 'day_c_recovery',
-      label: 'День 3 — Відновлення',
+      label: 'Відновлення',
       exercises: [...DAILY_MINIMUM],
     },
   ],

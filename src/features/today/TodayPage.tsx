@@ -100,15 +100,13 @@ function TimedExerciseRow({
         aria-label={t('actions.timedAria', { name: exercise.name })}
         onClick={handleStartTimer}
       >
-        <ClockIcon />
-        <span style={{ flex: 1, minWidth: 0 }}>
-          <span className="exercise-card__name" style={{ color: 'var(--text)' }}>
-            {exercise.name}
-          </span>
+        <span style={{ flex: 1, minWidth: 0, color: 'var(--text)' }}>
+          <span className="exercise-card__name">{exercise.name}</span>
           {exercise.notes ? (
             <span className="exercise-card__notes">{exercise.notes}</span>
           ) : null}
         </span>
+        <ClockIcon />
       </button>
     </li>
   );

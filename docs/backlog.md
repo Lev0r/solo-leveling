@@ -159,6 +159,34 @@ User-driven follow-ups from the Phase 5.6 review. Iterative; each bullet is its 
 
 ---
 
+### Phase 5.7d — Logo simplification, lighter bg, card facelift, drawer styling (Jun 15, 2026)
+
+User feedback after seeing 5.7c live ("it's pretty boring"):
+
+- [x] **Logo: drop the glow filter entirely**, keep only the gradient fill + thin white stroke (paint-order: stroke fill) for crispness. Default height bumped 28 → 36 so the brand reads bigger in the top bar.
+- [x] **Make gym background visible.** Darken overlay opacity dropped from `0.78–0.94` to `0.45–0.70`; gym photo (kettlebells / rig) now visibly carries the page instead of being a near-black slab.
+- [x] **Timer icon moved to the trailing edge** on timed cards (name + notes flex-grow on the left, clock on the right) — matches the "tap card → start timer" mental model with a clear affordance on the side opposite the reading direction's start.
+- [x] **Day title no longer says "День N — "**; only the body part ("Ноги та тягові", "Жими та балістика", "Відновлення"). The cycle index is implicit from context.
+- [x] **Removed UID debug footer** from `AppShell` (and dropped `useAuthState` + `t('debug.uid', ...)` usage that fed it). UID was bootstrap-only debug, no longer needed.
+- [x] **Card facelift.** Each card now has:
+  - A 4-px left accent stripe colored by kind (`--accent` violet for checklist, `--work` orange for timed) — distinguishes types at a glance.
+  - A subtle top-to-transparent surface gradient + 1-px inset white highlight + soft drop shadow → cards "lift off" the background instead of being flat rectangles.
+  - Translucent surface (`color-mix(surface-1 92%, transparent)`) with backdrop blur so the gym bg shows through faintly.
+  - Done state changes the stripe to `--complete` (green) and dims to 0.55 opacity.
+- [x] **Nav drawer redesign.** Background is now layered radial gradients (accent violet top-left, work orange bottom-right) over a subtle `surface-2 → surface-1` vertical gradient, with an inner right-edge accent line and a soft shadow. Brand mark added at the top; active link gets a 3-px accent stripe + accent-tinted background; link labels use the display font in caps for energy.
+- [x] **Routine data fixes** in `BUILTIN_DEFAULT_ROUTINE`:
+  - `warmup_skipping`: now a `timed` exercise (1 round × 300 s, no rest), since "5 хв безперервно" is literally a single timer block — checklist was wrong.
+  - `warmup_plank`: now a `timed` exercise (1 round × 60 s).
+  - `kb_swings`, `halo`, `dynamic_plank`: added notes (were missing — easy to miss form cues without them).
+- [x] Verified: typecheck / lint / 31 tests green.
+
+#### Nits & follow-ups (Phase 5.7d)
+
+- [ ] Existing users who already ran "Use default" before today still have the old `'День 1 — …'` labels and the checklist versions of skipping/plank in their Firestore routine. No migration runner yet; for the dev account, re-tap "Use default" on `/config` to refresh. Phase 7 (import/export) is the natural home for a "reset to built-in default" button.
+- [ ] Card backdrop-filter `blur(8px)` only renders if the browser supports it — Android Chrome ≥ 76 is fine, but old WebViews degrade to no blur (still legible).
+
+---
+
 ### Phase 5.7c — Top-bar fixes, logo polish, gym background image (Jun 15, 2026)
 
 User-driven follow-ups after seeing 5.7b live:
