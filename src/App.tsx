@@ -1,11 +1,16 @@
+import { RouterProvider } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { signInWithGoogle, signOutCurrentUser, useAuthState } from './data/auth';
 import { useIsWhitelisted } from './data/allowedUsers';
+import { router } from './app/router';
+import { BRAND_NAME } from './app/AppShell';
 
 function BrandHeading() {
-  return <h1>SoloLeveling</h1>;
+  return <h1>{BRAND_NAME}</h1>;
 }
 
 export default function App() {
+  const { t } = useTranslation(['common', 'auth']);
   const authState = useAuthState();
   const email = authState.status === 'signed-in' ? authState.user.email : null;
   const whitelistState = useIsWhitelisted(email);
@@ -14,7 +19,7 @@ export default function App() {
     return (
       <>
         <BrandHeading />
-        <p>Loading…</p>
+        <p>{t('common:loading')}</p>
       </>
     );
   }
@@ -24,7 +29,7 @@ export default function App() {
       <>
         <BrandHeading />
         <button type="button" onClick={() => void signInWithGoogle()}>
-          Sign in with Google
+          {t('auth:signInWithGoogle')}
         </button>
       </>
     );
@@ -34,7 +39,7 @@ export default function App() {
     return (
       <>
         <BrandHeading />
-        <p>Loading…</p>
+        <p>{t('common:loading')}</p>
       </>
     );
   }
@@ -43,26 +48,13 @@ export default function App() {
     return (
       <>
         <BrandHeading />
-        <p>Not invited yet.</p>
+        <p>{t('auth:notInvited')}</p>
         <button type="button" onClick={() => void signOutCurrentUser()}>
-          Sign out
+          {t('common:signOut')}
         </button>
       </>
     );
   }
 
-  const { uid, email: userEmail, displayName } = authState.user;
-
-  return (
-    <>
-      <BrandHeading />
-      <p>Welcome, {displayName ?? userEmail}</p>
-      <p>
-        Your UID: <code>{uid}</code>
-      </p>
-      <button type="button" onClick={() => void signOutCurrentUser()}>
-        Sign out
-      </button>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }

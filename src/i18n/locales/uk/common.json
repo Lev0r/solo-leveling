@@ -1,0 +1,18 @@
+{
+  "brand": "SoloLeveling",
+  "loading": "Завантаження…",
+  "signOut": "Вийти",
+  "nav": {
+    "today": "Сьогодні",
+    "welcome": "Вітання",
+    "settings": "Налаштування",
+    "admin": "Адмін",
+    "timer": "Таймер"
+  },
+  "debug": {
+    "uid": "UID: {{uid}}"
+  },
+  "timer": {
+    "description": "Екран інтервального таймера (заглушка)."
+  }
+}

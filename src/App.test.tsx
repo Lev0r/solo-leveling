@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import i18n from './i18n';
 import App from './App';
 
 vi.mock('./data/auth', () => ({
@@ -17,8 +18,8 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'SoloLeveling' })).toBeInTheDocument();
 
     const loadingOrSignIn =
-      screen.queryByText('Loading…') ??
-      screen.queryByRole('button', { name: 'Sign in with Google' });
+      screen.queryByText(i18n.t('common:loading')) ??
+      screen.queryByRole('button', { name: i18n.t('auth:signInWithGoogle') });
     expect(loadingOrSignIn).toBeInTheDocument();
   });
 });

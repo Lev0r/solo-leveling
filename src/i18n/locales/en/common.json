@@ -1,0 +1,18 @@
+{
+  "brand": "SoloLeveling",
+  "loading": "Loading…",
+  "signOut": "Sign out",
+  "nav": {
+    "today": "Today",
+    "welcome": "Welcome",
+    "settings": "Settings",
+    "admin": "Admin",
+    "timer": "Timer"
+  },
+  "debug": {
+    "uid": "UID: {{uid}}"
+  },
+  "timer": {
+    "description": "Interval timer screen (placeholder)."
+  }
+}
