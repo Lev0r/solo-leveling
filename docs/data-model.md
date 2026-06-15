@@ -314,6 +314,8 @@ The Config screen serializes the user's `routine/active` to a downloadable `.jso
 
 Invalid files are rejected with a human-readable error; Firestore is not updated on validation failure.
 
+**Export shape:** the downloaded file is the normalized routine document (same fields as Firestore `/users/{uid}/routine/active` after `parseRoutine` — uniform timers as `rounds` arrays, `schemaVersion` stamped to current, optional `name`/`units` included when set). No Firestore-only metadata is added.
+
 ---
 
 ## Migrations

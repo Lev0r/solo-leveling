@@ -227,12 +227,26 @@ User-driven follow-ups after seeing 5.7b live:
 
 ---
 
+### Phase 7 — JSON import/export (Jun 15, 2026)
+
+- [x] `src/data/routineJson.ts`: `exportRoutineToJson`, `importRoutineFromJson` (JSON.parse + `parseRoutine`), `routineExportFilename`, `downloadRoutineJson`
+- [x] `ConfigPage`: Export JSON (disabled when no user routine via `useUserRoutine`) + Import JSON (hidden file input, validate then `setUserRoutine`, navigate home on success, show `InvalidRoutineError.message` on failure)
+- [x] Export filename: `solo-leveling-routine.json` or `solo-leveling-routine-{name-slug}.json`; pretty-printed 2-space indent
+- [x] `config` i18n keys (uk + en): `routine.exportJson`, `routine.importError`, `routine.exportError`, `routine.noRoutineToExport`
+- [x] Unit tests in `src/data/routineJson.test.ts` (round-trip, invalid JSON, schemaVersion too high)
+
+#### Nits & follow-ups (Phase 7)
+
+- [ ] WelcomePage stub removed in Phase 5.7 nav consolidation — import/export lives on `/config` only
+
+---
+
 ## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
 
 - [x] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
-- [ ] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
+- [x] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
 - [ ] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
 - [ ] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
 - [ ] **Phase 10 — Production icon export**: square 1024, 192 / 512 / maskable-512, hooked into manifest.

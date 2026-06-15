@@ -3,7 +3,11 @@
     "title": "Welcome",
     "description": "The first-run screen with routine selection will appear here.",
     "useDefault": "Use default",
-    "importJson": "Import JSON"
+    "exportJson": "Export JSON",
+    "importJson": "Import JSON",
+    "importError": "Could not import the file. Check the JSON format.",
+    "exportError": "Could not export the routine.",
+    "noRoutineToExport": "No saved routine to export."
   },
   "admin": {
     "title": "Administration",
