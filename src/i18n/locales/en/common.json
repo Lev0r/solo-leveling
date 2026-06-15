@@ -15,8 +15,7 @@
     "uid": "UID: {{uid}}"
   },
   "timer": {
-    "title": "Timer",
-    "description": "Interval timer screen (placeholder)."
+    "title": "Timer"
   },
   "install": {
     "title": "Add SoloLeveling to your home screen",

@@ -26,6 +26,8 @@ interface TimerSession {
   exerciseId: string;
   exerciseName: string;
   rounds: Array<{ workSeconds: number; restSeconds: number }>;
+  dayId: string;
+  routineExerciseIdsForDay: readonly string[];
 }
 ```
 
@@ -52,13 +54,13 @@ Final values live in [design/theme.md](../design/theme.md). Summary:
 
 | Phase | Background | Purpose |
 |-------|------------|---------|
-| **Work** | warm `#FF6B35` (vibrant orange-coral) | "Go" state |
-| **Rest** | cool `#22D3EE` (bright cyan) | Visual break |
-| **Get ready** (optional 3 s lead-in) | dim warm tone | Brief countdown into round 1 |
-| **Complete** | green `#10B981` | Brief "done" state before dismiss |
-| **Paused** | dimmed current-phase color (~60%) | Same hue, lower brightness |
+| **Work** | warm `#FF6B35` gradient | "Go" state |
+| **Rest** | cool `#22D3EE` gradient | Visual break |
+| **Get ready** | dim warm `--ready` gradient | 3 s countdown before **every** work round |
+| **Complete** | green `#10B981` gradient | Brief "done" state before dismiss |
+| **Paused** | ~60% brightness overlay on current phase gradient | Same hue, lower brightness |
 
-Warm vs. cool was chosen because the contrast is unmistakable at arm's length even with the screen at low brightness in a dim room.
+Phase backgrounds use **CSS gradients** built from the timer tokens in [design/theme.md](../design/theme.md) (e.g. `linear-gradient(135deg, color-mix(...), ...)`). Paused applies a ~60% brightness overlay on the current phase gradient.
 
 ### Safe Areas
 
@@ -69,16 +71,16 @@ Respect `env(safe-area-inset-*)`. Countdown stays centered in the safe region.
 ### State Machine
 
 ```
-Idle → [GetReady (3 s)?] → Work(1) → Rest(1) → Work(2) → Rest(2) → … → Work(N) → Complete → Auto-dismiss
+Idle → GetReady (3 s) → Work(1) → Rest(1) → GetReady (3 s) → Work(2) → Rest(2) → … → Work(N) → Complete → Auto-dismiss
 ```
 
 Rules:
 
-1. **Start:** First phase is **Work**, round `1 / N`. Optional 3 s `GetReady` lead-in (decision deferred; default on).
-2. **Work → Rest:** When work hits `0`, switch to Rest for this round's `restSeconds`. If `restSeconds === 0`, go directly to next Work.
-3. **Rest → Work:** When rest hits `0`, increment round and start Work.
-4. **Final round:** After the last Work interval reaches `0`, show **Complete** (green) for ~1.5 s, **auto-mark the exercise complete** in the day's log (`completedVia: "timer"`), then return to Today's Workout.
-5. **Between phases:** instant color swap for clarity (no fade in v1).
+1. **Start:** First phase is **GetReady** (3 s), then **Work** round `1 / N`. Get-ready repeats before **every** work round (including round 1 and after each rest).
+2. **Work → Rest:** When work hits `0`, switch to Rest for this round's `restSeconds`. If `restSeconds === 0`, skip Rest — go to GetReady for the next work round, or **Complete** after the last work round.
+3. **Rest → Work:** When rest hits `0`, show GetReady (3 s), then increment round and start Work.
+4. **Final round:** After the last Work interval reaches `0`, show **Complete** (green) for ~1.5 s, **auto-mark the exercise complete** in the day's log (`completedVia: "timer"`), then return to Today's Workout. No trailing get-ready after the final work round.
+5. **Between phases:** instant gradient swap for clarity (no fade in v1).
 
 ### Variable Round Support
 
@@ -87,7 +89,7 @@ Each round consumes its own `workSeconds` / `restSeconds` from the array. The ro
 Example: `[{40,20}, {30,20}, {30,0}]` runs:
 
 ```
-Work 40 → Rest 20 → Work 30 → Rest 20 → Work 30 → Complete
+GetReady → Work 40 → Rest 20 → GetReady → Work 30 → Rest 20 → GetReady → Work 30 → Complete
 ```
 
 ### Auto-Complete on Finish
@@ -95,7 +97,15 @@ Work 40 → Rest 20 → Work 30 → Rest 20 → Work 30 → Complete
 When the timer reaches its Complete state, write the day's log:
 
 ```ts
-await dailyLog.markExerciseComplete({ exerciseId, completedVia: "timer" });
+await setExerciseCompletion({
+  uid,
+  timezone,
+  dayId,
+  exerciseId,
+  isCompleted: true,
+  completedVia: 'timer',
+  routineExerciseIdsForDay,
+});
 ```
 
 - If the day's log doesn't exist yet, it is created.
@@ -107,9 +117,21 @@ await dailyLog.markExerciseComplete({ exerciseId, completedVia: "timer" });
 - Show **remaining seconds** as an integer (`45`, `44`, … `1`, `0`).
 - At `0`, transition immediately to the next phase.
 
-### Audio & Haptics (v1)
+### Audio (v1)
 
-- Out of v1. Deferred to a settings toggle later. Spec'd here so it can land additively.
+Sounds are synthesized via the **Web Audio API** — no external audio files, no new npm dependencies.
+
+| When | Sound |
+|------|-------|
+| Get-ready phase | Soft tick every second |
+| Last 3 s of each **work** interval (`secondsLeft` 3, 2, 1) | Louder tick |
+| Paused | Silent |
+
+Short oscillator bursts with an envelope (not harsh square waves at max volume). `AudioContext` unlocks on the first user interaction (timer card tap counts).
+
+### Manual complete (Today's Workout)
+
+**Long-press** (~500 ms) on a timed exercise card marks it complete manually (`completedVia: "manual"`) without opening the timer. Uses pointer events; cancels on move/up. Does not navigate to `/timer` if the long-press fired.
 
 ## Controls
 
@@ -150,7 +172,7 @@ Row hint format:
 
 ## Routing
 
-Dedicated route `/timer` with location state passed via React Router. If the user reloads `/timer` directly, the screen has no session in memory and redirects to `/`.
+Dedicated route `/timer` **outside** `AppShell` (full viewport, no hamburger/header). Location state passed via React Router. If the user reloads `/timer` directly, the screen has no session in memory and redirects to `/`.
 
 ```
 navigate('/timer', { state: timerSession });
@@ -195,27 +217,27 @@ When launched from the home screen (standalone), the timer must:
 
 ### Testing Checklist (for the eventual Playwright/Vitest suite)
 
-- [ ] 1 round, rest 0 — work only, then complete
-- [ ] Uniform 8×20/10 — alternates colors correctly
-- [ ] Variable `[{40,20},{30,20},{30,0}]` — last round skips trailing rest
-- [ ] Pause/resume preserves remaining seconds
-- [ ] Exit confirm while running; no confirm when complete
-- [ ] Auto-complete writes `dailyLog.exercises[id].isCompleted = true` with `completedVia: "timer"`
-- [ ] Background tab: countdown accurate on return
-- [ ] Wake Lock acquired on mount (where supported)
+- [x] 1 round, rest 0 — get-ready, work only, then complete
+- [x] Uniform 2×20/10 — get-ready before each work, alternates gradients correctly
+- [x] Variable `[{40,20},{30,20},{30,0}]` — get-ready between rounds; last round skips trailing rest
+- [x] Pause/resume preserves remaining seconds
+- [ ] Exit confirm while running; no confirm when complete (manual QA)
+- [x] Auto-complete writes `dailyLog.exercises[id].isCompleted = true` with `completedVia: "timer"`
+- [x] Background tab: countdown accurate on return (wall-clock recompute)
+- [x] Wake Lock acquired while running (where supported)
 
 ## Out of Scope (v1)
 
 - Custom colors per exercise
 - Editing timer values on the timer screen
 - Persisting partial timer progress (resume after exit)
-- Text-to-speech / countdown beeps
+- Text-to-speech
 - Multiple simultaneous timers
 - Landscape orientation
 
 ## Future (v2+)
 
-- Sound + haptics toggle
-- "Get ready" length configurable
+- Sound + haptics toggle in Settings
+- [~] "Get ready" length configurable in Settings
 - Per-exercise color overrides
 - Standalone timer screen (start an arbitrary timer not tied to today's workout)

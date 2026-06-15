@@ -1,19 +1,18 @@
-import type { ChangeEvent } from 'react';
-import { useCallback, useState } from 'react';
+import type { ChangeEvent, PointerEvent } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../../data/auth';
 import { setExerciseCompletion, useTodayLog } from '../../data/dailyLog';
 import { useUserRoutine } from '../../data/routine';
-import type { ChecklistExercise, Exercise, RoutineDay, TimedExercise, TimerRound } from '../../data/schema';
+import type { ChecklistExercise, Exercise, RoutineDay, TimedExercise } from '../../data/schema';
 import { useUserProfileContext } from '../../data/userProfile';
 import { getTodaysDay } from '../../lib/cycle';
+import { unlockTimerAudio } from '../timer/timerSounds';
+import type { TimerSession } from '../timer/types';
 
-type TimerSession = {
-  exerciseId: string;
-  exerciseName: string;
-  rounds: TimerRound[];
-};
+const LONG_PRESS_MS = 500;
+const LONG_PRESS_MOVE_THRESHOLD_PX = 10;
 
 function ClockIcon() {
   return (
@@ -75,18 +74,75 @@ function ChecklistExerciseRow({
 function TimedExerciseRow({
   exercise,
   isCompleted,
+  dayId,
+  routineExerciseIdsForDay,
+  onManualComplete,
 }: {
   exercise: TimedExercise;
   isCompleted: boolean;
+  dayId: string;
+  routineExerciseIdsForDay: readonly string[];
+  onManualComplete: (exerciseId: string) => Promise<void>;
 }) {
   const { t } = useTranslation('today');
   const navigate = useNavigate();
+  const longPressTimerRef = useRef<number | null>(null);
+  const longPressFiredRef = useRef(false);
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
 
-  const handleStartTimer = () => {
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current !== null) {
+      window.clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLButtonElement>) => {
+    longPressFiredRef.current = false;
+    pointerStartRef.current = { x: event.clientX, y: event.clientY };
+    unlockTimerAudio();
+
+    clearLongPressTimer();
+    longPressTimerRef.current = window.setTimeout(() => {
+      longPressFiredRef.current = true;
+      void onManualComplete(exercise.id);
+    }, LONG_PRESS_MS);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
+    const start = pointerStartRef.current;
+    if (start === null) {
+      return;
+    }
+
+    const distance = Math.hypot(event.clientX - start.x, event.clientY - start.y);
+    if (distance > LONG_PRESS_MOVE_THRESHOLD_PX) {
+      clearLongPressTimer();
+    }
+  };
+
+  const handlePointerUp = () => {
+    clearLongPressTimer();
+    pointerStartRef.current = null;
+  };
+
+  const handlePointerCancel = () => {
+    clearLongPressTimer();
+    pointerStartRef.current = null;
+  };
+
+  const handleClick = () => {
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false;
+      return;
+    }
+
     const timerSession: TimerSession = {
       exerciseId: exercise.id,
       exerciseName: exercise.name,
       rounds: exercise.timer.rounds,
+      dayId,
+      routineExerciseIdsForDay,
     };
     navigate('/timer', { state: timerSession });
   };
@@ -98,7 +154,11 @@ function TimedExerciseRow({
         className="exercise-card__timed-trigger"
         style={{ color: 'var(--work)' }}
         aria-label={t('actions.timedAria', { name: exercise.name })}
-        onClick={handleStartTimer}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onClick={handleClick}
       >
         <span style={{ flex: 1, minWidth: 0, color: 'var(--text)' }}>
           <span className="exercise-card__name">{exercise.name}</span>
@@ -116,15 +176,29 @@ function ExerciseRow({
   exercise,
   isCompleted,
   isPending,
+  dayId,
+  routineExerciseIdsForDay,
   onToggle,
+  onManualComplete,
 }: {
   exercise: Exercise;
   isCompleted: boolean;
   isPending: boolean;
+  dayId: string;
+  routineExerciseIdsForDay: readonly string[];
   onToggle: (exerciseId: string, checked: boolean) => void;
+  onManualComplete: (exerciseId: string) => Promise<void>;
 }) {
   if (exercise.kind === 'timed') {
-    return <TimedExerciseRow exercise={exercise} isCompleted={isCompleted} />;
+    return (
+      <TimedExerciseRow
+        exercise={exercise}
+        isCompleted={isCompleted}
+        dayId={dayId}
+        routineExerciseIdsForDay={routineExerciseIdsForDay}
+        onManualComplete={onManualComplete}
+      />
+    );
   }
 
   return (
@@ -185,6 +259,39 @@ function TodayWorkout({
     [uid, timezone, day.id, routineExerciseIdsForDay, logState],
   );
 
+  const handleManualComplete = useCallback(
+    async (exerciseId: string) => {
+      if (logState.status !== 'ready') {
+        return;
+      }
+
+      setToggleError(false);
+      setPendingIds((prev) => new Set(prev).add(exerciseId));
+
+      try {
+        await setExerciseCompletion({
+          uid,
+          timezone,
+          dayId: day.id,
+          exerciseId,
+          isCompleted: true,
+          completedVia: 'manual',
+          routineExerciseIdsForDay,
+        });
+        logState.reload();
+      } catch {
+        setToggleError(true);
+      } finally {
+        setPendingIds((prev) => {
+          const next = new Set(prev);
+          next.delete(exerciseId);
+          return next;
+        });
+      }
+    },
+    [uid, timezone, day.id, routineExerciseIdsForDay, logState],
+  );
+
   if (logState.status === 'loading') {
     return <p>{t('common:loading')}</p>;
   }
@@ -210,9 +317,12 @@ function TodayWorkout({
               exercise={exercise}
               isCompleted={entry?.isCompleted ?? false}
               isPending={pendingIds.has(exercise.id)}
+              dayId={day.id}
+              routineExerciseIdsForDay={routineExerciseIdsForDay}
               onToggle={(exerciseId, checked) => {
                 void handleToggle(exerciseId, checked);
               }}
+              onManualComplete={handleManualComplete}
             />
           );
         })}

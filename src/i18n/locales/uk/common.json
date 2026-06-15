@@ -15,8 +15,7 @@
     "uid": "UID: {{uid}}"
   },
   "timer": {
-    "title": "Таймер",
-    "description": "Екран інтервального таймера (заглушка)."
+    "title": "Таймер"
   },
   "install": {
     "title": "Додайте SoloLeveling на головний екран",

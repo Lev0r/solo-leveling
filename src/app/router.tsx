@@ -6,6 +6,7 @@ import { SettingsPage } from '../features/settings/SettingsPage';
 import { TimerPage } from '../features/timer/TimerPage';
 
 export const router = createBrowserRouter([
+  { path: '/timer', element: <TimerPage /> },
   {
     path: '/',
     element: <AppShell />,
@@ -13,7 +14,6 @@ export const router = createBrowserRouter([
       { index: true, element: <TodayPage /> },
       { path: 'config', element: <ConfigPage /> },
       { path: 'settings', element: <SettingsPage /> },
-      { path: 'timer', element: <TimerPage /> },
       { path: 'welcome', element: <Navigate to="/config" replace /> },
     ],
   },

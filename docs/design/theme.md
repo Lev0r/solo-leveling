@@ -44,6 +44,8 @@ The violet ties to the manhwa-system aesthetic of the icon without screaming "an
 
 Warm vs. cool was chosen so the contrast is unmistakable from across the room and works for the ~5% of users with red-green color vision deficiency (the orange/cyan pair stays distinct under all common CVD simulations).
 
+On the full-screen timer route, phase backgrounds use **CSS gradients** derived from these tokens (not flat fills), e.g. `linear-gradient(135deg, color-mix(in srgb, var(--work) …), …)`. Paused dims the current gradient with a ~60% brightness overlay.
+
 ### Semantic — System
 
 | Token | Hex | Use |

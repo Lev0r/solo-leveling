@@ -6,7 +6,7 @@ Decisions still pending. When resolved, **move the answer into the relevant doc 
 
 ### Behavior — Small Defaults
 
-1. **Get-ready lead-in.** The interval timer spec has an optional 3 s `GetReady` phase before round 1. Default: **on**. Confirm or override before shipping.
+1. ~~**Get-ready lead-in.**~~ Resolved Phase 6: **on**, 3 s before every work round (including round 1 and after each rest). Ticks every second during get-ready; loud ticks on the last 3 s of each work interval.
 2. **Variable timer hint format on the workout row.** Spec proposes joined work durations (`40/30/30`) for variable, `4×40/20` for uniform. OK?
 3. **First-time language detection.** Default is `uk`. If the browser locale is `en`, do we still force `uk`, or pick `en` until the user explicitly sets one? Spec currently: prefer `uk` unless the user explicitly changes it.
 

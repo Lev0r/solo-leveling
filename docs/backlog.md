@@ -154,7 +154,7 @@ User-driven follow-ups from the Phase 5.6 review. Iterative; each bullet is its 
 #### Nits & follow-ups (Phase 5.7)
 
 - [ ] Admin sub-section in `/config` is a placeholder; real CRUD is Phase 8.
-- [ ] Timed-card done state is only reachable today via the Phase-6 timer auto-complete; checklist toggling on a timed card is not possible (the timed card has no checkbox). If users need to manually mark a timed exercise done without running the timer, add a long-press / secondary action later.
+- [x] Timed-card manual complete via **long-press** (~500 ms) on the card — marks done with `completedVia: "manual"` without opening the timer. Shipped Phase 6.
 - [ ] Exercise category icons / animated level-up moments still on the wish list.
 
 ---
@@ -182,7 +182,7 @@ User feedback after seeing 5.7c live ("it's pretty boring"):
 
 #### Nits & follow-ups (Phase 5.7d)
 
-- [ ] Existing users who already ran "Use default" before today still have the old `'День 1 — …'` labels and the checklist versions of skipping/plank in their Firestore routine. No migration runner yet; for the dev account, re-tap "Use default" on `/config` to refresh. Phase 7 (import/export) is the natural home for a "reset to built-in default" button.
+- [x] Existing users who already ran "Use default" before 5.7d had stale labels/checklist skipping — resolved by re-tapping "Use default" on `/config` (dev account confirmed Jun 15).
 - [ ] Card backdrop-filter `blur(8px)` only renders if the browser supports it — Android Chrome ≥ 76 is fine, but old WebViews degrade to no blur (still legible).
 
 ---
@@ -206,11 +206,32 @@ User-driven follow-ups after seeing 5.7b live:
 
 ---
 
+---
+
+### Phase 6 — Interval timer (Jun 15, 2026)
+
+- [x] Full-screen `/timer` route outside `AppShell` — no app chrome, `100dvh`, safe-area insets
+- [x] `useIntervalTimer` hook: wall-clock countdown (250 ms tick), get-ready 3 s before **every** work round, variable rounds, pause/resume, skip rest, complete phase ~1.5 s
+- [x] Phase gradients from `--work` / `--rest` / `--ready` / `--complete`; paused ~60% overlay
+- [x] Web Audio API ticks (soft get-ready; loud last 3 s of work); unlock on first tap
+- [x] Wake Lock while running (`useWakeLock` in timer feature)
+- [x] Auto-complete via `setExerciseCompletion({ completedVia: 'timer', … })` then navigate home
+- [x] Long-press (~500 ms) on timed cards → manual complete (`completedVia: 'manual'`)
+- [x] Extended `TimerSession` router state: `dayId`, `routineExerciseIdsForDay`
+- [x] `timer` i18n namespace (uk + en); Vitest unit tests for `useIntervalTimer`
+
+#### Nits & follow-ups (Phase 6)
+
+- [ ] Playwright e2e for timer happy path (Phase 11)
+- [ ] Gate `UpdatePrompt` auto-reload while timer active (Phase 4 nit)
+
+---
+
 ## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
 
-- [ ] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
+- [x] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
 - [ ] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
 - [ ] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
 - [ ] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
@@ -223,7 +244,7 @@ Order subject to change. Each phase is one subagent dispatch + verification.
 
 - [ ] "Download all my data" admin button (per `architecture.md` backups discussion)
 - [ ] `short_name` choice for the PWA manifest (open-question #4)
-- [ ] Get-ready lead-in default toggle (open-question #1)
+- [ ] Get-ready lead-in default toggle (open-question #1) — **on** in v1; Settings toggle deferred
 - [ ] Variable timer hint format on workout rows (open-question #2)
 - [ ] First-time language detection rule (open-question #3) — currently spec says always `uk`
 - [ ] CI/CD via GitHub Actions (currently manual `npm run deploy`)
@@ -238,7 +259,7 @@ These are documented as out of scope but the data model / contracts already make
 - [~] Multi-user signup UI (data layer is ready; no UI)
 - [~] Weight logs UI (`kind: "weighted"` exercise variant)
 - [~] Charts (volume, streaks, PRs)
-- [~] Sound + haptics on timer phase change
+- [~] Sound + haptics on timer phase change — basic Web Audio ticks shipped Phase 6; Settings toggle deferred
 - [~] Routine sharing between whitelisted users
 - [~] Apple Watch / Wear OS companion
 - [~] Push notifications / reminders (FCM)

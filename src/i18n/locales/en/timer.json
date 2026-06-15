@@ -1,0 +1,14 @@
+{
+  "phase": {
+    "getReady": "GET READY",
+    "work": "WORK",
+    "rest": "REST",
+    "complete": "DONE",
+    "paused": "PAUSED"
+  },
+  "round": "{{current}} / {{total}}",
+  "exitConfirm": "The timer is still running. Exit?",
+  "skipRest": "Skip",
+  "close": "Close",
+  "completeError": "Could not mark the exercise complete."
+}
