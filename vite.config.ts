@@ -25,20 +25,25 @@ export default defineConfig({
         theme_color: '#13141B',
         icons: [
           {
-            src: '/icons/icon.svg',
+            src: '/icons/icon-192.png',
             sizes: '192x192',
-            type: 'image/svg+xml',
+            type: 'image/png',
+          },
+          {
+            src: '/icons/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: '/icons/icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
           },
           {
             src: '/icons/icon.svg',
-            sizes: '512x512',
+            sizes: 'any',
             type: 'image/svg+xml',
-          },
-          {
-            src: '/icons/icon-maskable.svg',
-            sizes: '512x512',
-            type: 'image/svg+xml',
-            purpose: 'maskable',
           },
         ],
       },

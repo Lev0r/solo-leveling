@@ -25,6 +25,8 @@ The joke: SoloLeveling is a manhwa about getting stronger alone via a System int
 | `public/icons/icon-maskable-512.png` | 512×512 | Android adaptive icon (maskable safe zone) |
 | `public/favicon.svg` | (vector) | Browser tab icon |
 
+Generated from `public/icons/icon.svg` and `icon-maskable.svg` via `npm run build:icons` (`scripts/build-icons.mjs`, uses `sharp`).
+
 ### Maskable Safe Zone
 
 Android adaptive icons crop with masks (circle, squircle, rounded square, teardrop). All meaningful content must sit within the inner **80%** of the canvas (a 410×410 circle inside the 512×512 square). The cyan frame and "+1 LVL" should respect this — the surrounding `--bg` color fills the bleed area.

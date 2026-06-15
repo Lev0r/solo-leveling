@@ -73,7 +73,7 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 
 #### Nits & follow-ups (Phase 4)
 
-- [ ] Real raster icons (192/512/maskable-512 PNGs) — Phase 10
+- [x] Real raster icons (192/512/maskable-512 PNGs) — Phase 10 `(see Phase 10 section)`
 - [ ] Gate `UpdatePrompt`'s auto-reload by "is a timer / workout active?" once Phase 6 lands (architecture.md service-worker note)
 - [ ] Lighthouse PWA audit pass (deferred — needs real icons + HTTPS deploy)
 
@@ -263,6 +263,15 @@ User-driven follow-ups after seeing 5.7b live:
 
 ---
 
+### Phase 10 — Production icon export (Jun 15, 2026)
+
+- [x] `scripts/build-icons.mjs` — rasterize SVG sources to PNG via `sharp` (`npm run build:icons`)
+- [x] Generated `public/icons/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` from existing SVG placeholders
+- [x] PWA manifest in `vite.config.ts` updated to reference PNG icons (+ SVG `any` fallback)
+- [x] `sharp` added as devDependency
+
+---
+
 ## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
@@ -271,7 +280,7 @@ Order subject to change. Each phase is one subagent dispatch + verification.
 - [x] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
 - [x] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
 - [x] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
-- [ ] **Phase 10 — Production icon export**: square 1024, 192 / 512 / maskable-512, hooked into manifest.
+- [x] **Phase 10 — Production icon export**: 192 / 512 / maskable-512 PNGs, hooked into manifest.
 - [ ] **Phase 11 — Playwright e2e**: 1 happy-path per primary screen.
 
 ---
