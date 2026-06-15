@@ -8,7 +8,10 @@
     "welcome": "Вітання",
     "settings": "Налаштування",
     "admin": "Адмін",
-    "timer": "Таймер"
+    "timer": "Таймер",
+    "menuLabel": "Меню",
+    "close": "Закрити",
+    "openMenu": "Відкрити меню"
   },
   "debug": {
     "uid": "UID: {{uid}}"

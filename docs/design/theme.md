@@ -55,11 +55,15 @@ Warm vs. cool was chosen so the contrast is unmistakable from across the room an
 
 ## Typography
 
-- System font stack (no web fonts in v1):
+- **Body:** `Manrope` (weights 400/500/600/700) — geometric, modern, full Cyrillic.
+- **Display / headings / brand:** `Oswald` (weights 500/700) — condensed athletic feel, full Cyrillic.
+- Both loaded from Google Fonts with `display=swap`; preconnect to `fonts.gstatic.com`. Tokens: `--font-body`, `--font-display` in `src/ui/tokens.css`.
+- System font stack remains the fallback chain inside both tokens:
   ```
   -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
   Roboto, "Helvetica Neue", Arial, sans-serif
   ```
+- The "no web fonts in v1" rule from earlier docs was relaxed in Phase 5.6; see `docs/backlog.md` for the trade-off note.
 - Tabular figures (`font-variant-numeric: tabular-nums`) on every number that updates (timer, sets, weights).
 - Sizes: `12 / 14 / 16 / 20 / 24 / 32` rem-scaled. Default body: `16px`.
 - Line height: `1.4` body, `1.1` headings, `1` for the timer digits.

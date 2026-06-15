@@ -8,7 +8,10 @@
     "welcome": "Welcome",
     "settings": "Settings",
     "admin": "Admin",
-    "timer": "Timer"
+    "timer": "Timer",
+    "menuLabel": "Menu",
+    "close": "Close",
+    "openMenu": "Open menu"
   },
   "debug": {
     "uid": "UID: {{uid}}"

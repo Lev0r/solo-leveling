@@ -8,10 +8,14 @@ import {
   useUserProfile,
 } from './data/userProfile';
 import { router } from './app/router';
-import { BRAND_NAME } from './app/AppShell';
+import { BrandLogo } from './app/BrandLogo';
 
 function BrandHeading() {
-  return <h1>{BRAND_NAME}</h1>;
+  return (
+    <h1 aria-label="SoloLeveling">
+      <BrandLogo />
+    </h1>
+  );
 }
 
 function FallbackPage({ children }: { children: React.ReactNode }) {

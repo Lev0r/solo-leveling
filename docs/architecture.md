@@ -100,7 +100,7 @@ Implementation uses `Intl.DateTimeFormat` + `date-fns-tz` (or equivalent) to con
 - Use `100dvh` (dynamic viewport) instead of `100vh`.
 - Respect safe areas: `env(safe-area-inset-top/bottom/left/right)`.
 - No hover-only interactions.
-- System font stack — no web fonts in v1 (saves bytes, avoids layout shift).
+- Typography uses Google web fonts (Manrope body + Oswald display) loaded via `<link>` in `index.html` with `display=swap` and `preconnect` to `fonts.gstatic.com`. The system font stack remains the fallback chain via `--font-body` / `--font-display`. Trade-off accepted in Phase 5.6 for the fitness-app brand feel; the original "no web fonts" guidance is superseded. See [design/theme.md](./design/theme.md).
 
 ### PWA Manifest
 

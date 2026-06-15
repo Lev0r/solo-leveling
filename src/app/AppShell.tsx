@@ -1,80 +1,68 @@
-import type { CSSProperties } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { signOutCurrentUser, useAuthState } from '../data/auth';
+import { useAuthState } from '../data/auth';
+import { BrandLogo } from './BrandLogo';
 import { InstallPrompt } from './InstallPrompt';
+import { NavDrawer } from './NavDrawer';
 import { UpdatePrompt } from './UpdatePrompt';
 
-export const BRAND_NAME = 'SoloLeveling';
+export { BRAND_NAME } from './BrandLogo';
 
-const touchTarget: CSSProperties = {
-  minHeight: 48,
-  minWidth: 48,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '0 12px',
-};
-
-const navLinkStyle: CSSProperties = {
-  ...touchTarget,
-};
+function HamburgerIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
 
 export function AppShell() {
   const { t } = useTranslation('common');
   const authState = useAuthState();
   const uid = authState.status === 'signed-in' ? authState.user.uid : '';
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  const openDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
-      <header
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-          padding: '12px 16px',
-          paddingTop: 'calc(12px + env(safe-area-inset-top))',
-          borderBottom: '1px solid var(--border)',
-          background: 'var(--surface-1)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 8,
-          }}
+      <header className="app-top-bar">
+        <button
+          ref={hamburgerRef}
+          type="button"
+          className="app-top-bar__menu"
+          aria-expanded={isDrawerOpen}
+          aria-controls="primary-nav"
+          aria-label={t('nav.openMenu')}
+          onClick={openDrawer}
         >
-          <h1 style={{ margin: 0, fontSize: '1.25rem' }}>{BRAND_NAME}</h1>
-          <button type="button" style={touchTarget} onClick={() => void signOutCurrentUser()}>
-            {t('signOut')}
-          </button>
+          <HamburgerIcon />
+        </button>
+        <div className="app-top-bar__brand">
+          <BrandLogo />
         </div>
-        <nav
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 4,
-          }}
-        >
-          <NavLink to="/" style={navLinkStyle} end>
-            {t('nav.today')}
-          </NavLink>
-          <NavLink to="/welcome" style={navLinkStyle}>
-            {t('nav.welcome')}
-          </NavLink>
-          <NavLink to="/settings" style={navLinkStyle}>
-            {t('nav.settings')}
-          </NavLink>
-          <NavLink to="/admin/users" style={navLinkStyle}>
-            {t('nav.admin')}
-          </NavLink>
-          <NavLink to="/timer" style={navLinkStyle}>
-            {t('nav.timer')}
-          </NavLink>
-        </nav>
       </header>
+
+      <NavDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
 
       <main style={{ flex: 1, padding: '16px' }}>
         <Outlet />

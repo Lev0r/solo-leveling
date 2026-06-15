@@ -18,11 +18,6 @@ const touchTarget: CSSProperties = {
   padding: '0 12px',
 };
 
-const checkboxTarget: CSSProperties = {
-  minHeight: 48,
-  minWidth: 48,
-};
-
 function formatTimerHint(
   exercise: TimedExercise,
   mixedLabel: string,
@@ -74,52 +69,38 @@ function ExerciseRow({
       ? t('today:hint.mixed', { count: exercise.timer.rounds.length })
       : '';
 
+  const checkboxId = `exercise-${exercise.id}`;
+
   return (
-    <li
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 4,
-        paddingBottom: 12,
-        borderBottom: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+    <li className="exercise-card" data-done={isCompleted}>
+      <label className="exercise-card__label" htmlFor={checkboxId}>
         <input
           type="checkbox"
-          id={`exercise-${exercise.id}`}
+          id={checkboxId}
+          className="sr-only"
           checked={isCompleted}
           disabled={isPending}
           onChange={handleChange}
-          style={checkboxTarget}
         />
-        <label htmlFor={`exercise-${exercise.id}`} style={{ flex: 1 }}>
-          {exercise.name}
-        </label>
-        {exercise.kind === 'timed' ? (
-          <button
-            type="button"
-            data-variant="primary"
-            style={touchTarget}
-            aria-label={t('today:actions.startTimer')}
-            onClick={() => console.log('today:startTimer', { exerciseId: exercise.id })}
-          >
-            ▶ {formatTimerHint(exercise, mixedLabel)}
-          </button>
+        <span className="exercise-card__name">{exercise.name}</span>
+        {exercise.notes ? (
+          <span className="exercise-card__notes">{exercise.notes}</span>
         ) : null}
-      </div>
-      {exercise.notes ? (
-        <p
-          style={{
-            margin: 0,
-            paddingLeft: 56,
-            fontSize: '0.875rem',
-            color: 'var(--text-muted)',
+      </label>
+      {exercise.kind === 'timed' ? (
+        <button
+          type="button"
+          className="exercise-card__action"
+          data-variant="primary"
+          style={touchTarget}
+          aria-label={t('today:actions.startTimer')}
+          onClick={(event) => {
+            event.stopPropagation();
+            console.log('today:startTimer', { exerciseId: exercise.id });
           }}
         >
-          <span style={{ fontWeight: 600 }}>{t('today:notes')}: </span>
-          {exercise.notes}
-        </p>
+          ▶ {formatTimerHint(exercise, mixedLabel)}
+        </button>
       ) : null}
     </li>
   );
@@ -185,9 +166,11 @@ function TodayWorkout({
 
   return (
     <>
-      {log?.completedAt ? <p>{t('today:completedBanner')}</p> : null}
+      {log?.completedAt ? (
+        <p className="today-completed-banner">{t('today:completedBanner')}</p>
+      ) : null}
       {toggleError ? <p>{t('today:errors.toggleFailed')}</p> : null}
-      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <ul className="exercise-list">
         {day.exercises.map((exercise) => {
           const entry = log?.exercises.find((item) => item.exerciseId === exercise.id);
           return (
@@ -239,8 +222,7 @@ function TodayPageContent({ uid, timezone }: { uid: string; timezone: string }) 
 
   return (
     <section>
-      <h2>{t('today:title')}</h2>
-      <p>{t('today:dayLabel', { label: day.label })}</p>
+      <h1>{day.label}</h1>
       <TodayWorkout
         uid={uid}
         timezone={timezone}

@@ -118,6 +118,27 @@ Inserted out-of-roadmap after Phase 5 because the app was still rendering plain 
 
 ---
 
+### Phase 5.6 — UX overhaul: cards, logo, hamburger nav, fitness fonts (Jun 15, 2026)
+
+User-driven design pass after Phase 5.5 to make the app feel like a fitness product instead of a wireframe.
+
+- [x] Web fonts: Google Fonts `Manrope` (body) + `Oswald` (display/brand), `display=swap`, preconnect to `fonts.gstatic.com`. New tokens `--font-body` and `--font-display` in `tokens.css`. **Diverges from earlier "no web fonts in v1" guidance in `architecture.md` and `theme.md`** — both docs updated to reflect the new reality.
+- [x] `BrandLogo` SVG component: "SoloLeveling" in Oswald 700 with a linear gradient fill (`--accent` → `--work`) and a subtle Gaussian-blur glow filter. Accessible via `<svg role="img" aria-label="SoloLeveling">` so `App.test.tsx` continues to find the heading by name.
+- [x] Hamburger drawer nav (`src/app/NavDrawer.tsx`): slim 56 px top bar with hamburger left + BrandLogo center. Drawer slides in from the left over a `rgba(0,0,0,0.5)` backdrop. Closes on Escape, backdrop click, or NavLink click. Focus moves to the close (×) button on open and restores to the hamburger button on close (minimal pattern, no focus-trap library).
+- [x] `TodayPage` exercise cards: each row is a card (`--surface-1` bg, `--border` 1 px, `--radius-md`) with the entire card acting as the toggle via a label-wraps-`.sr-only`-checkbox pattern. Done state via `[data-done="true"]`: opacity 0.6, border `--complete`, `color-mix` accent background tint, `text-decoration: line-through`, leading `✓` glyph from `::before`. Trailing ▶ button is a sibling of the label (`stopPropagation` on click) so we avoid `<button>` inside `<label>`-inside-`<button>` weirdness.
+- [x] Dropped the `today:title` heading from `TodayPage`; promoted `day.label` to `<h1>`.
+- [x] Notes restyle: removed the "Notes:" prefix; rendered as italic `--text-muted` block below the exercise name.
+- [x] Pre-router fallback views (`App.tsx`) now use `BrandLogo` inside `.centered-page`.
+- [x] Three new `common:nav.*` keys: `menuLabel`, `close`, `openMenu` (uk + en).
+
+#### Nits & follow-ups (Phase 5.6)
+
+- [ ] Logo glow filter is fixed; could become a hover-only effect on desktop to feel more alive.
+- [ ] Drawer focus-trap is minimal (Tab can escape the dialog while open). A real focus-trap helper would tighten this up if/when a11y audit demands it.
+- [ ] Web fonts add ~30–50 KB to first load; if PWA Lighthouse score suffers, consider self-hosting subsets or moving back to system fonts.
+
+---
+
 ## In Progress
 
 _(nothing dispatched)_
