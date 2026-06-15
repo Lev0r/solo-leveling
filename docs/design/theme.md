@@ -80,6 +80,22 @@ Warm vs. cool was chosen so the contrast is unmistakable from across the room an
 - Timer phase switch: **instant** (no transition) — clarity over polish.
 - Avoid spring animations in v1.
 
+## Interaction
+
+Press feedback uses `transform: scale()` with `var(--transition-default)` — buttons scale to `0.97`, cards (including timed-card triggers) to `0.99`. The scale is subtle enough to read as tactile confirmation without layout shift.
+
+`:hover` styles are gated behind `@media (hover: hover) and (pointer: fine)` so hover never sticks on touch devices after a tap. Desktop and stylus users still get underline / background hover cues.
+
+`-webkit-tap-highlight-color: transparent` on the document removes the default Android gray flash; our scale animation replaces it.
+
+`:focus-visible` is the only focus indicator — no `:focus` rules. Keyboard users get the accent outline; mouse/touch clicks do not show a persistent ring.
+
+`@media (prefers-reduced-motion: reduce)` disables active transforms and shortens all transitions/animations to `0.01ms`, respecting OS accessibility settings.
+
+For slow async operations (e.g. saving a routine), disable the trigger button rather than relying on `:active` alone — the button stays visually inactive until the operation completes and cannot re-fire mid-flight.
+
+Implementation lives in a single file: [`src/ui/tokens.css`](../../src/ui/tokens.css).
+
 ## Tokens File (planned)
 
 When code lands, tokens live in `src/ui/tokens.css` as CSS custom properties, exported to TypeScript via a small `tokens.ts` mirror so design code can stay type-safe.

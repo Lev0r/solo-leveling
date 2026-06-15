@@ -145,11 +145,17 @@ User-driven design pass after Phase 5.5 to make the app feel like a fitness prod
 
 User-driven follow-ups from the Phase 5.6 review. Iterative; each bullet is its own dispatch candidate.
 
-- [x] **Font selection** — converged after 4 rounds on **Syncopate** (display/brand) + **Exo 2** (body). Wide sci-fi-tech geometric pairs with futuristic geometric body; non-Russian designers; full Cyrillic. Applied via `--font-display` / `--font-body` tokens; BrandLogo viewBox + sizing adjusted for Syncopate's wider letterforms. `theme.md` updated.
-- [ ] **Remove ▶ button from `TodayPage` cards.** Indicate timed exercises with a small icon (e.g. stopwatch glyph) or by tinting the card edge with `--work`. The tap-to-start-timer path moves to the card itself (or a card variant) — keep accessibility (still toggleable to complete vs starting a timer must remain distinct interactions).
-- [ ] **Consolidate navigation.** Drop `/timer` from the nav: the timer is only meaningful when launched from a routine exercise (no standalone use case). Merge `/welcome` (import) + `/admin/users` + future admin into a single `/config` route; admins see extra sections inline. New nav set: `Today`, `Config`, `Settings` (+ sign-out in drawer).
-- [ ] **PWA click / tap / hover animations.** Research best practices for mobile-first PWAs (ripple vs scale-down vs background swap; respect `prefers-reduced-motion`; avoid `:hover` traps on touch devices). Apply globally to buttons + cards. Document the pattern in `docs/design/theme.md` under a new "Interaction" section.
-- [ ] **Visual interest.** App currently feels flat. Ideas to explore: subtle gradient background, exercise category icons (kettlebell / barbell / jump rope SVGs), accent illustrations on Welcome / Settings / Config, animated streak/level-up moments. Pick a direction once font + interaction patterns are settled.
+- [x] **Font selection** — converged after 4 rounds on **Syncopate** (display/brand) + **Exo 2** (body). `(9b13eda)`
+- [x] **Card icons + timer launch from cards.** Checklist cards keep the label-wraps-hidden-checkbox toggle. Timed cards become single-`<button>` tap targets with a leading stopwatch icon in `--work`; tap navigates to `/timer` with `{ exerciseId, exerciseName, rounds }` location state (matches `docs/features/interval-timer.md` `TimerSession` contract; the timer screen itself is still Phase 6).
+- [x] **Nav consolidation.** Drawer now has three links: `Today`, `Config`, `Settings`. `/welcome` and `/admin/users` routes removed; `/welcome` → `/config` redirect kept for backward compat. `/timer` route stays (for card-tap navigation) but is no longer in the nav. `ConfigPage` shows routine setup (Use default / Import JSON) always + an admin-only sub-section gated by the new `useIsAdmin(uid)` hook reading `/admins/{uid}`.
+- [x] **Interaction polish.** Tap/press feedback via `transform: scale(0.97)` (buttons) / `0.99` (cards). `:hover` now gated behind `@media (hover: hover) and (pointer: fine)` so it never sticks on touch. `-webkit-tap-highlight-color: transparent`. Full `prefers-reduced-motion: reduce` block at the bottom of `tokens.css`. Documented in new `## Interaction` section of `docs/design/theme.md`.
+- [x] **Visual interest.** Body bg is now a radial-gradient (violet at top, warm at bottom-right, base `--bg`) with `background-attachment: fixed`. Top app bar gets a 2 px gradient hairline (`--accent` → `--work` @ 0.5 opacity) tying the chrome back to the BrandLogo gradient.
+
+#### Nits & follow-ups (Phase 5.7)
+
+- [ ] Admin sub-section in `/config` is a placeholder; real CRUD is Phase 8.
+- [ ] Timed-card done state is only reachable today via the Phase-6 timer auto-complete; checklist toggling on a timed card is not possible (the timed card has no checkbox). If users need to manually mark a timed exercise done without running the timer, add a long-press / secondary action later.
+- [ ] Visual interest is minimal (gradient bg + hairline); exercise category icons / animated level-up moments still on the wish list.
 
 ---
 

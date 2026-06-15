@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useIsAdmin } from '../../data/admins';
 import { useAuthState } from '../../data/auth';
 import { getDefaultRoutine, setUserRoutine } from '../../data/routine';
 
@@ -14,8 +15,26 @@ const touchTarget: CSSProperties = {
   padding: '0 12px',
 };
 
-export function WelcomePage() {
-  const { t } = useTranslation(['welcome', 'common']);
+function AdminSection() {
+  const { t } = useTranslation('config');
+  const authState = useAuthState();
+  const uid = authState.status === 'signed-in' ? authState.user.uid : null;
+  const adminState = useIsAdmin(uid);
+
+  if (adminState.status !== 'admin') {
+    return null;
+  }
+
+  return (
+    <section style={{ marginTop: 32 }}>
+      <h2>{t('admin.title')}</h2>
+      <p style={{ color: 'var(--text-muted)' }}>{t('admin.placeholder')}</p>
+    </section>
+  );
+}
+
+export function ConfigPage() {
+  const { t } = useTranslation(['config', 'common']);
   const navigate = useNavigate();
   const authState = useAuthState();
   const [isSaving, setIsSaving] = useState(false);
@@ -43,8 +62,8 @@ export function WelcomePage() {
 
   return (
     <section>
-      <h2>{t('welcome:title')}</h2>
-      <p style={{ color: 'var(--text-muted)' }}>{t('welcome:description')}</p>
+      <h2>{t('config:routine.title')}</h2>
+      <p style={{ color: 'var(--text-muted)' }}>{t('config:routine.description')}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
           <button
@@ -56,7 +75,7 @@ export function WelcomePage() {
               void handleUseDefault();
             }}
           >
-            {t('welcome:useDefault')}
+            {t('config:routine.useDefault')}
           </button>
           <button
             type="button"
@@ -64,12 +83,13 @@ export function WelcomePage() {
             disabled={isSaving}
             onClick={() => console.log('welcome:importJson')}
           >
-            {t('welcome:importJson')}
+            {t('config:routine.importJson')}
           </button>
           {isSaving ? <span>{t('common:loading')}</span> : null}
         </div>
         {saveError ? <p>{t('common:error')}</p> : null}
       </div>
+      <AdminSection />
     </section>
   );
 }

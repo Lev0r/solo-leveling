@@ -95,17 +95,11 @@ export function NavDrawer({
           <NavLink to="/" end onClick={onClose}>
             {t('nav.today')}
           </NavLink>
-          <NavLink to="/welcome" onClick={onClose}>
-            {t('nav.welcome')}
+          <NavLink to="/config" onClick={onClose}>
+            {t('nav.config')}
           </NavLink>
           <NavLink to="/settings" onClick={onClose}>
             {t('nav.settings')}
-          </NavLink>
-          <NavLink to="/admin/users" onClick={onClose}>
-            {t('nav.admin')}
-          </NavLink>
-          <NavLink to="/timer" onClick={onClose}>
-            {t('nav.timer')}
           </NavLink>
         </nav>
 

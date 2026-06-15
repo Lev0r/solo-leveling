@@ -7,7 +7,8 @@
     "mixed_other": "{{count}} sets, mixed"
   },
   "actions": {
-    "startTimer": "Start timer"
+    "startTimer": "Start timer",
+    "timedAria": "Start timer for {{name}}"
   },
   "notes": "Notes",
   "errors": {

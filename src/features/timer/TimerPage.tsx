@@ -5,7 +5,7 @@ export function TimerPage() {
 
   return (
     <section>
-      <h2>{t('nav.timer')}</h2>
+      <h2>{t('timer.title')}</h2>
       <p style={{ color: 'var(--text-muted)' }}>{t('timer.description')}</p>
     </section>
   );

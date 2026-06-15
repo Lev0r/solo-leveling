@@ -51,12 +51,17 @@
 html,
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--work) 5%, transparent), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -81,13 +86,20 @@ button {
   transition:
     background-color var(--transition-default),
     color var(--transition-default),
-    border-color var(--transition-default);
+    border-color var(--transition-default),
+    transform var(--transition-default);
 }
 
-button:hover:not(:disabled) {
-  background: var(--accent-soft);
-  border-color: var(--accent-soft);
-  color: var(--text);
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button:hover:not(:disabled) {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+    color: var(--text);
+  }
 }
 
 button:disabled {
@@ -101,10 +113,12 @@ button[data-variant='primary'] {
   border-color: var(--accent);
 }
 
-button[data-variant='primary']:hover:not(:disabled) {
-  background: var(--accent-soft);
-  border-color: var(--accent-soft);
-  color: var(--bg);
+@media (hover: hover) and (pointer: fine) {
+  button[data-variant='primary']:hover:not(:disabled) {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+    color: var(--bg);
+  }
 }
 
 button[aria-pressed='true'] {
@@ -113,10 +127,12 @@ button[aria-pressed='true'] {
   border-color: var(--accent);
 }
 
-button[aria-pressed='true']:hover:not(:disabled) {
-  background: var(--accent-soft);
-  border-color: var(--accent-soft);
-  color: var(--bg);
+@media (hover: hover) and (pointer: fine) {
+  button[aria-pressed='true']:hover:not(:disabled) {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+    color: var(--bg);
+  }
 }
 
 input[type='checkbox'] {
@@ -151,10 +167,17 @@ label {
 a {
   color: var(--accent);
   text-decoration: none;
+  transition: transform var(--transition-default);
 }
 
-a:hover {
-  text-decoration: underline;
+a:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 a[aria-current='page'] {
@@ -247,9 +270,11 @@ a[aria-current='page'] {
   text-decoration: none;
 }
 
-.nav-drawer__links a:hover {
-  background: var(--surface-2);
-  text-decoration: none;
+@media (hover: hover) and (pointer: fine) {
+  .nav-drawer__links a:hover {
+    background: var(--surface-2);
+    text-decoration: none;
+  }
 }
 
 .nav-drawer__divider {
@@ -270,8 +295,20 @@ a[aria-current='page'] {
   min-height: 56px;
   padding: 0 16px;
   padding-top: env(safe-area-inset-top);
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
+  box-shadow: 0 2px 0 0 transparent;
   background: var(--surface-1);
+}
+
+.app-top-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--work));
+  opacity: 0.5;
 }
 
 .app-top-bar__menu {
@@ -311,7 +348,14 @@ a[aria-current='page'] {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 12px 16px;
-  transition: var(--transition-default);
+  transition:
+    transform var(--transition-default),
+    background-color var(--transition-default),
+    border-color var(--transition-default);
+}
+
+.exercise-card:active {
+  transform: scale(0.99);
 }
 
 .exercise-card:focus-within {
@@ -352,8 +396,40 @@ a[aria-current='page'] {
   margin-top: 4px;
 }
 
-.exercise-card__action {
-  flex-shrink: 0;
+.exercise-card--timed {
+  padding: 0;
+}
+
+.exercise-card__timed-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 12px 16px;
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--transition-default),
+    transform var(--transition-default);
+}
+
+.exercise-card__timed-trigger:active {
+  transform: scale(0.99);
+}
+
+.exercise-card--timed[data-done='true'] .exercise-card__name {
+  text-decoration: line-through;
+}
+
+.exercise-card--timed[data-done='true'] .exercise-card__name::before {
+  content: '✓ ';
+  color: var(--complete);
 }
 
 .today-completed-banner {
@@ -378,4 +454,22 @@ a[aria-current='page'] {
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
   padding-left: calc(16px + env(safe-area-inset-left));
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  button:active:not(:disabled),
+  .exercise-card:active,
+  .exercise-card__timed-trigger:active,
+  a:active {
+    transform: none !important;
+  }
 }

@@ -9,7 +9,8 @@
     "mixed_other": "{{count}} підходи, змішано"
   },
   "actions": {
-    "startTimer": "Запустити таймер"
+    "startTimer": "Запустити таймер",
+    "timedAria": "Запустити таймер для {{name}}"
   },
   "notes": "Нотатки",
   "errors": {

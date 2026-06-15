@@ -1,73 +1,54 @@
-import type { CSSProperties, ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../../data/auth';
 import { setExerciseCompletion, useTodayLog } from '../../data/dailyLog';
 import { useUserRoutine } from '../../data/routine';
-import type { Exercise, RoutineDay, TimedExercise } from '../../data/schema';
+import type { ChecklistExercise, Exercise, RoutineDay, TimedExercise, TimerRound } from '../../data/schema';
 import { useUserProfileContext } from '../../data/userProfile';
 import { getTodaysDay } from '../../lib/cycle';
 
-const touchTarget: CSSProperties = {
-  minHeight: 48,
-  minWidth: 48,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '0 12px',
+type TimerSession = {
+  exerciseId: string;
+  exerciseName: string;
+  rounds: TimerRound[];
 };
 
-function formatTimerHint(
-  exercise: TimedExercise,
-  mixedLabel: string,
-): string {
-  const rounds = exercise.timer.rounds;
-  const first = rounds[0];
-
-  if (first === undefined) {
-    return mixedLabel;
-  }
-
-  const isUniform = rounds.every(
-    (round) =>
-      round.workSeconds === first.workSeconds &&
-      round.restSeconds === first.restSeconds,
+function ClockIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <circle cx="10" cy="11" r="6.5" />
+      <rect x="8.5" y="2" width="3" height="2.5" rx="0.5" />
+      <line x1="10" y1="11" x2="10" y2="8" />
+      <line x1="10" y1="11" x2="12.5" y2="11" />
+    </svg>
   );
-
-  if (isUniform) {
-    return `${rounds.length}×${first.workSeconds}/${first.restSeconds}`;
-  }
-
-  const joined = rounds.map((round) => round.workSeconds).join('/');
-  if (joined.length > 24) {
-    return mixedLabel;
-  }
-
-  return joined;
 }
 
-function ExerciseRow({
+function ChecklistExerciseRow({
   exercise,
   isCompleted,
   isPending,
   onToggle,
 }: {
-  exercise: Exercise;
+  exercise: ChecklistExercise;
   isCompleted: boolean;
   isPending: boolean;
   onToggle: (exerciseId: string, checked: boolean) => void;
 }) {
-  const { t } = useTranslation(['today', 'common']);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onToggle(exercise.id, event.target.checked);
   };
-
-  const mixedLabel =
-    exercise.kind === 'timed'
-      ? t('today:hint.mixed', { count: exercise.timer.rounds.length })
-      : '';
 
   const checkboxId = `exercise-${exercise.id}`;
 
@@ -87,22 +68,74 @@ function ExerciseRow({
           <span className="exercise-card__notes">{exercise.notes}</span>
         ) : null}
       </label>
-      {exercise.kind === 'timed' ? (
-        <button
-          type="button"
-          className="exercise-card__action"
-          data-variant="primary"
-          style={touchTarget}
-          aria-label={t('today:actions.startTimer')}
-          onClick={(event) => {
-            event.stopPropagation();
-            console.log('today:startTimer', { exerciseId: exercise.id });
-          }}
-        >
-          ▶ {formatTimerHint(exercise, mixedLabel)}
-        </button>
-      ) : null}
     </li>
+  );
+}
+
+function TimedExerciseRow({
+  exercise,
+  isCompleted,
+}: {
+  exercise: TimedExercise;
+  isCompleted: boolean;
+}) {
+  const { t } = useTranslation('today');
+  const navigate = useNavigate();
+
+  const handleStartTimer = () => {
+    const timerSession: TimerSession = {
+      exerciseId: exercise.id,
+      exerciseName: exercise.name,
+      rounds: exercise.timer.rounds,
+    };
+    navigate('/timer', { state: timerSession });
+  };
+
+  return (
+    <li className="exercise-card exercise-card--timed" data-done={isCompleted}>
+      <button
+        type="button"
+        className="exercise-card__timed-trigger"
+        style={{ color: 'var(--work)' }}
+        aria-label={t('actions.timedAria', { name: exercise.name })}
+        onClick={handleStartTimer}
+      >
+        <ClockIcon />
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span className="exercise-card__name" style={{ color: 'var(--text)' }}>
+            {exercise.name}
+          </span>
+          {exercise.notes ? (
+            <span className="exercise-card__notes">{exercise.notes}</span>
+          ) : null}
+        </span>
+      </button>
+    </li>
+  );
+}
+
+function ExerciseRow({
+  exercise,
+  isCompleted,
+  isPending,
+  onToggle,
+}: {
+  exercise: Exercise;
+  isCompleted: boolean;
+  isPending: boolean;
+  onToggle: (exerciseId: string, checked: boolean) => void;
+}) {
+  if (exercise.kind === 'timed') {
+    return <TimedExerciseRow exercise={exercise} isCompleted={isCompleted} />;
+  }
+
+  return (
+    <ChecklistExerciseRow
+      exercise={exercise}
+      isCompleted={isCompleted}
+      isPending={isPending}
+      onToggle={onToggle}
+    />
   );
 }
 
@@ -214,7 +247,7 @@ function TodayPageContent({ uid, timezone }: { uid: string; timezone: string }) 
   }
 
   if (routineState.routine === null) {
-    return <Navigate to="/welcome" replace />;
+    return <Navigate to="/config" replace />;
   }
 
   const { day } = getTodaysDay(routineState.routine, timezone, new Date());

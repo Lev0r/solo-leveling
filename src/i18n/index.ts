@@ -2,18 +2,16 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-import ukAdmin from './locales/uk/admin.json';
 import ukAuth from './locales/uk/auth.json';
 import ukCommon from './locales/uk/common.json';
+import ukConfig from './locales/uk/config.json';
 import ukSettings from './locales/uk/settings.json';
 import ukToday from './locales/uk/today.json';
-import ukWelcome from './locales/uk/welcome.json';
-import enAdmin from './locales/en/admin.json';
 import enAuth from './locales/en/auth.json';
 import enCommon from './locales/en/common.json';
+import enConfig from './locales/en/config.json';
 import enSettings from './locales/en/settings.json';
 import enToday from './locales/en/today.json';
-import enWelcome from './locales/en/welcome.json';
 
 void i18n
   .use(LanguageDetector)
@@ -23,18 +21,16 @@ void i18n
       uk: {
         common: ukCommon,
         auth: ukAuth,
-        welcome: ukWelcome,
+        config: ukConfig,
         today: ukToday,
         settings: ukSettings,
-        admin: ukAdmin,
       },
       en: {
         common: enCommon,
         auth: enAuth,
-        welcome: enWelcome,
+        config: enConfig,
         today: enToday,
         settings: enSettings,
-        admin: enAdmin,
       },
     },
     fallbackLng: 'uk',

@@ -5,10 +5,8 @@
   "signOut": "Sign out",
   "nav": {
     "today": "Today",
-    "welcome": "Welcome",
+    "config": "Config",
     "settings": "Settings",
-    "admin": "Admin",
-    "timer": "Timer",
     "menuLabel": "Menu",
     "close": "Close",
     "openMenu": "Open menu"
@@ -17,6 +15,7 @@
     "uid": "UID: {{uid}}"
   },
   "timer": {
+    "title": "Timer",
     "description": "Interval timer screen (placeholder)."
   },
   "install": {
