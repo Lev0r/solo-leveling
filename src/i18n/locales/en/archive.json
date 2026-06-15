@@ -1,0 +1,23 @@
+{
+  "title": "Archives",
+  "listHeading": "Created archives",
+  "empty": "No archives yet.",
+  "summarizedAt": "Summarized: {{date}}",
+  "createPreviousYear": "Create archive for {{year}}",
+  "archiveYearLabel": "Archive year",
+  "archiveYearAction": "Create archive",
+  "deleteRawLogs": "Delete raw logs",
+  "deleteRawLogsConfirm": "Delete all daily logs for {{year}}? This cannot be undone.",
+  "rawLogsDeleted": "Raw logs deleted",
+  "working": "Working…",
+  "error": "Action failed. Please try again.",
+  "banner": {
+    "prompt": "Archive for {{year}} has not been created yet. Create it?",
+    "create": "Create archive",
+    "created": "Archive created. Delete raw logs to save space?",
+    "deleteRawLogs": "Delete raw logs",
+    "keepRawLogs": "Keep logs",
+    "working": "Creating archive…",
+    "error": "Could not create archive. Please try again."
+  }
+}

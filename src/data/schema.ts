@@ -1,6 +1,7 @@
 export const USER_PROFILE_SCHEMA_VERSION = 1;
 export const ROUTINE_SCHEMA_VERSION = 1;
 export const DAILY_LOG_SCHEMA_VERSION = 1;
+export const ARCHIVE_SCHEMA_VERSION = 1;
 
 export type AppLanguage = 'uk' | 'en';
 
@@ -70,4 +71,26 @@ export type DailyLog = {
   dayId: DayId;
   exercises: DailyLogExerciseEntry[];
   completedAt?: string;
+};
+
+export type ExerciseArchiveTotals = {
+  completedSessions: number;
+  totalWorkSeconds?: number;
+};
+
+export type YearlyArchive = {
+  schemaVersion: typeof ARCHIVE_SCHEMA_VERSION;
+  year: number;
+  summarizedAt: string;
+  userTimezoneAtSummary: string;
+  totals: {
+    daysTrained: number;
+    workoutsByDayId: Record<DayId, number>;
+  };
+  exerciseTotals: Record<ExerciseId, ExerciseArchiveTotals>;
+  streaks: {
+    longestTrainedDays: number;
+    longestRestDays: number;
+  };
+  rawLogsDeletedAt: string | null;
 };

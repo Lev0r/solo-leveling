@@ -252,6 +252,17 @@ User-driven follow-ups after seeing 5.7b live:
 
 ---
 
+### Phase 9 — Yearly archive (Jun 15, 2026)
+
+- [x] `src/data/archive.ts`: `summarizeYear`, `createArchive`, `fetchDailyLogsForYear`, `listArchives`, `getArchive`, `deleteRawLogsForYear`, `getPendingArchiveYear`, `useArchivePrompt`
+- [x] `ARCHIVE_SCHEMA_VERSION = 1` + `YearlyArchive` type in `schema.ts`
+- [x] `ArchiveBanner` on TodayPage when previous-year archive is missing
+- [x] Settings "Archives" section: list archives, create previous year, manual year picker (last 3 years), delete raw logs
+- [x] `archive` i18n namespace (uk + en)
+- [x] Unit tests in `src/data/archive.test.ts` (summarizeYear streaks/totals/work seconds, firebase mocks)
+
+---
+
 ## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
@@ -259,7 +270,7 @@ Order subject to change. Each phase is one subagent dispatch + verification.
 - [x] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
 - [x] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
 - [x] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
-- [ ] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
+- [x] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
 - [ ] **Phase 10 — Production icon export**: square 1024, 192 / 512 / maskable-512, hooked into manifest.
 - [ ] **Phase 11 — Playwright e2e**: 1 happy-path per primary screen.
 

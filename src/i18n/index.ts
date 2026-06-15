@@ -2,12 +2,14 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
+import ukArchive from './locales/uk/archive.json';
 import ukAuth from './locales/uk/auth.json';
 import ukCommon from './locales/uk/common.json';
 import ukConfig from './locales/uk/config.json';
 import ukSettings from './locales/uk/settings.json';
 import ukToday from './locales/uk/today.json';
 import ukTimer from './locales/uk/timer.json';
+import enArchive from './locales/en/archive.json';
 import enAuth from './locales/en/auth.json';
 import enCommon from './locales/en/common.json';
 import enConfig from './locales/en/config.json';
@@ -23,6 +25,7 @@ void i18n
       uk: {
         common: ukCommon,
         auth: ukAuth,
+        archive: ukArchive,
         config: ukConfig,
         today: ukToday,
         settings: ukSettings,
@@ -31,6 +34,7 @@ void i18n
       en: {
         common: enCommon,
         auth: enAuth,
+        archive: enArchive,
         config: enConfig,
         today: enToday,
         settings: enSettings,

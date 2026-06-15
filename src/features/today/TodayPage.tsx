@@ -2,6 +2,7 @@ import type { ChangeEvent, PointerEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { ArchiveBanner } from '../archive/ArchiveBanner';
 import { useAuthState } from '../../data/auth';
 import { setExerciseCompletion, useTodayLog } from '../../data/dailyLog';
 import { useUserRoutine } from '../../data/routine';
@@ -363,6 +364,7 @@ function TodayPageContent({ uid, timezone }: { uid: string; timezone: string }) 
 
   return (
     <section>
+      <ArchiveBanner uid={uid} timezone={timezone} />
       <h1>{day.label}</h1>
       <TodayWorkout
         uid={uid}
