@@ -2,8 +2,8 @@ import type { ChangeEvent, CSSProperties } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useIsAdmin } from '../../data/admins';
 import { useAuthState } from '../../data/auth';
+import { AdminSection } from './AdminSection';
 import {
   InvalidRoutineError,
   getDefaultRoutine,
@@ -20,24 +20,6 @@ const touchTarget: CSSProperties = {
   justifyContent: 'center',
   padding: '0 12px',
 };
-
-function AdminSection() {
-  const { t } = useTranslation('config');
-  const authState = useAuthState();
-  const uid = authState.status === 'signed-in' ? authState.user.uid : null;
-  const adminState = useIsAdmin(uid);
-
-  if (adminState.status !== 'admin') {
-    return null;
-  }
-
-  return (
-    <section style={{ marginTop: 32 }}>
-      <h2>{t('admin.title')}</h2>
-      <p style={{ color: 'var(--text-muted)' }}>{t('admin.placeholder')}</p>
-    </section>
-  );
-}
 
 export function ConfigPage() {
   const { t } = useTranslation(['config', 'common']);

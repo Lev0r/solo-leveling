@@ -96,7 +96,7 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 - [ ] Wire ▶ button to `/timer` with `TimerSession` state (Phase 6)
 - [x] Visual polish (theme tokens) — landed in Phase 5.5
 - [ ] `routineExerciseIdsForDay` recomputed each render — micro-optimization with `useMemo` if it ever matters
-- [ ] Admin-editable `/defaults/routine` (Phase 8) — currently the constant is the only source
+- [x] Admin-editable `/defaults/routine` — Phase 8 admin default-routine editor on `/config`
 
 ---
 
@@ -153,7 +153,7 @@ User-driven follow-ups from the Phase 5.6 review. Iterative; each bullet is its 
 
 #### Nits & follow-ups (Phase 5.7)
 
-- [ ] Admin sub-section in `/config` is a placeholder; real CRUD is Phase 8.
+- [x] Admin sub-section in `/config` — Phase 8 whitelist CRUD + default routine editor
 - [x] Timed-card manual complete via **long-press** (~500 ms) on the card — marks done with `completedVia: "manual"` without opening the timer. Shipped Phase 6.
 - [ ] Exercise category icons / animated level-up moments still on the wish list.
 
@@ -241,13 +241,24 @@ User-driven follow-ups after seeing 5.7b live:
 
 ---
 
+### Phase 8 — Admin whitelist CRUD + default routine editor (Jun 15, 2026)
+
+- [x] `src/data/allowedUsers.ts`: `listAllowedUsers`, `addAllowedUser`, `removeAllowedUser`, `ALLOWED_USER_SCHEMA_VERSION = 1`; kept `useIsWhitelisted`
+- [x] `src/data/allowedUsers.test.ts`: unit tests with vi.mock firebase (list/add/remove/invalid email)
+- [x] `src/data/routine.ts`: `setDefaultRoutine` writes `/defaults/routine`
+- [x] `ConfigPage` admin subsection (`AdminSection.tsx`): whitelist list/reload/add/remove (confirm dialog); default routine export/import/reset-to-built-in; gated by `useIsAdmin`
+- [x] `config` i18n keys (uk + en) for all admin strings
+- [x] No `/admins` CRUD UI (manual console only, per multi-user.md v1 scope)
+
+---
+
 ## Rough roadmap (post Phase 5)
 
 Order subject to change. Each phase is one subagent dispatch + verification.
 
 - [x] **Phase 6 — Interval Timer**: full-screen, normalized variable intervals, auto-complete-on-finish, theme colors from `design/theme.md`, Wake Lock.
 - [x] **Phase 7 — JSON Import/Export**: serialize/parse routines with schema validation per `data-model.md`.
-- [ ] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
+- [x] **Phase 8 — Admin screens**: whitelist CRUD + default routine editor.
 - [ ] **Phase 9 — Yearly archive**: summarizer + raw-log deletion + first-of-year banner trigger.
 - [ ] **Phase 10 — Production icon export**: square 1024, 192 / 512 / maskable-512, hooked into manifest.
 - [ ] **Phase 11 — Playwright e2e**: 1 happy-path per primary screen.

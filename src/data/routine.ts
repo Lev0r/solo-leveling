@@ -325,6 +325,10 @@ export async function setUserRoutine(
   await setDoc(userRoutineDocRef(uid), routine);
 }
 
+export async function setDefaultRoutine(routine: NormalizedRoutine): Promise<void> {
+  await setDoc(defaultRoutineDocRef(), routine);
+}
+
 export type UserRoutineState =
   | { status: 'loading' }
   | { status: 'ready'; routine: NormalizedRoutine | null }

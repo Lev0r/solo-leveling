@@ -11,6 +11,32 @@
   },
   "admin": {
     "title": "Administration",
-    "placeholder": "Admin features will be available in Phase 8."
+    "whitelist": {
+      "title": "Whitelist",
+      "description": "Users with these email addresses can sign in to the app.",
+      "reload": "Reload list",
+      "emailPlaceholder": "email@example.com",
+      "add": "Add",
+      "remove": "Remove",
+      "removeConfirm": "Remove {{email}} from the whitelist?",
+      "empty": "The whitelist is empty.",
+      "loadError": "Could not load the whitelist.",
+      "addError": "Could not add the user.",
+      "removeError": "Could not remove the user.",
+      "invalidEmail": "Enter a valid email address."
+    },
+    "defaultRoutine": {
+      "title": "Default routine",
+      "description": "New users see this routine when they choose “Use default”.",
+      "exportJson": "Export JSON",
+      "importJson": "Import JSON",
+      "resetBuiltin": "Reset to built-in",
+      "resetConfirm": "Replace the default routine with the built-in version?",
+      "resetSuccess": "Default routine reset to built-in.",
+      "resetError": "Could not reset the default routine.",
+      "exportError": "Could not export the default routine.",
+      "importError": "Could not import the file. Check the JSON format.",
+      "importSuccess": "Default routine updated."
+    }
   }
 }
