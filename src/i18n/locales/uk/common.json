@@ -1,6 +1,7 @@
 {
   "brand": "SoloLeveling",
   "loading": "Завантаження…",
+  "error": "Помилка",
   "signOut": "Вийти",
   "nav": {
     "today": "Сьогодні",

@@ -1,4 +1,6 @@
 {
   "title": "Welcome",
-  "description": "The first-run screen with routine selection will appear here."
+  "description": "The first-run screen with routine selection will appear here.",
+  "useDefault": "Use default",
+  "importJson": "Import JSON"
 }

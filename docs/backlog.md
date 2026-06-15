@@ -43,25 +43,30 @@ Source of truth for "what's done, in flight, and next" on SoloLeveling. Lightwei
 
 ---
 
-## In Progress
+### Phase 3 — Routing, i18n, user profile, first real screens (Jun 15, 2026)
 
-_(nothing dispatched yet)_
+- [x] React Router v7 with v1 routes: `/`, `/welcome`, `/settings`, `/admin/users`, `/timer` `(8c3c225)`
+- [x] `i18next` + `react-i18next` + `i18next-browser-languagedetector`; namespaces: `common`, `auth`, `welcome`, `settings`, `admin`; default `uk`, fallback `en`; resolution order localStorage → navigator → default `(8c3c225)`
+- [x] All existing English placeholders moved into `uk`/`en` bundles `(8c3c225)`
+- [x] `AppShell` layout: top bar + nav + UID debug footer, 48 dp touch targets, `100dvh` `(8c3c225)`
+- [x] `/users/{uid}` auto-created on first sign-in (timezone from `Intl`, language `'uk'`, `schemaVersion: 1`); `lastSignInAt` updated once per session
+- [x] `useUserProfile()` hook + `UserProfileProvider`/`useUserProfileContext()` (one-shot read, create-if-missing, StrictMode-safe write guard, imperative `updateLanguage`)
+- [x] Settings screen: language switcher (writes profile + `localStorage['lang']` + `i18n.changeLanguage`) + read-only timezone
+- [x] Welcome screen stub: title/description + two buttons (Use default / Import JSON) wired to `console.log`
+- [x] Vitest unit tests for `useUserProfile` (create, update, StrictMode dedupe, `updateLanguage`)
+
+#### Nits & follow-ups (Phase 3)
+
+- [ ] `UserProfileProvider` uses `createElement` because `userProfile.ts` is `.ts`; consider renaming to `.tsx` if/when more JSX-bearing helpers land in the same file.
+- [ ] Visual polish: AppShell is unstyled placeholder; theme tokens land in a later phase.
 
 ---
 
-## Next — Phase 3 (planned)
+## In Progress
 
-**Theme**: routing + i18n + user profile + first non-placeholder screens.
+_(nothing dispatched)_
 
-- [ ] React Router with v1 routes from `architecture.md`: `/`, `/welcome`, `/settings`, `/admin/users`, `/timer` (placeholder)
-- [ ] `i18next` + `react-i18next`; namespaces: `common`, `auth`, `welcome`, `settings`, `admin`
-- [ ] Default locale `uk`; fallback `en`; all current English placeholders moved into bundles
-- [ ] `/users/{uid}` document auto-created on first sign-in (timezone from browser `Intl`, language `'uk'`)
-- [ ] `useUserProfile()` hook (one-shot read + create-if-missing)
-- [ ] Settings screen: language switcher + read-only timezone display
-- [ ] Welcome screen stub: "no routine yet" with two future-buttons (Use default / Import JSON) wired to `console.log`
-
-**Out of Phase 3 scope** (don't let it grow): PWA plugin, actual routine loading, today's workout rendering, timer, JSON import/export, admin screens beyond a placeholder route.
+---
 
 ---
 

@@ -1,6 +1,7 @@
 {
   "brand": "SoloLeveling",
   "loading": "Loading…",
+  "error": "Error",
   "signOut": "Sign out",
   "nav": {
     "today": "Today",

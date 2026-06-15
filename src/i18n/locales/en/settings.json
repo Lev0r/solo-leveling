@@ -1,4 +1,10 @@
 {
   "title": "Settings",
-  "description": "Language, timezone, and other preferences will appear here."
+  "description": "Language, timezone, and other preferences will appear here.",
+  "language": {
+    "label": "Language",
+    "uk": "Українська",
+    "en": "English"
+  },
+  "timezone": "Timezone"
 }
